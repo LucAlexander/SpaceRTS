@@ -11,3 +11,12 @@ float utils::lengthDirY(float length, float dir){
 int utils::sign(int val){
 	return val > 0 ? 1 : val == 0 ? 0 : -1;
 }
+
+
+float utils::distancePoint(float x, float y, float xx, float yy){
+	x-=xx;
+	y-=yy;
+	x*=x;
+	y*=y;
+	return sqrt(x+y);
+}

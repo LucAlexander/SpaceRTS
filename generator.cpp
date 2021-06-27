@@ -12,6 +12,8 @@
 #include"triangulation.h"
 #include"generator.h"
 #include"regionMapping.h"
+#include"unit.h"
+#include"entityHandler.h"
 
 Generator::Generator(){
 	readIn("syllables.txt", syllables);
@@ -157,6 +159,11 @@ int Generator::countWords(std::string name){
 	return count;
 }
 
+// FOREWARD DECLARATIONS OF LOOP FUNCTIONS
+void update();
+void draw();
+
+
 int main(int argc, char** argv){
 	// MAPPING INSTANTIATION AND MAKING TRIANGLE MESH
 	RegionMapper mapper = RegionMapper(16);
@@ -199,6 +206,12 @@ int main(int argc, char** argv){
 	// PLANET POINT INSTANTIATION
 	std::vector<Planet> planets = mapper.generatePlanetPositions(64, 8, 5, 25);
 	
+	// UNIT BOID TESTING
+	Unit* ship = enth::instanceCreate(Unit());
+
+	sf::Clock clock;
+	sf::Int32 elapsedTime;
+	int frameTime = 1000/utils::TPS;
 	while(sfmlWin.isOpen()){
 		sf::Event e;
 		while(sfmlWin.pollEvent(e)){
@@ -208,29 +221,33 @@ int main(int argc, char** argv){
 				break;
 			}
 		}
-		//TODO compartmentalize
-		//update
-		sf::View gCam = sfmlWin.getView();
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
-			gCam.zoom(0.99);
+		elapsedTime += clock.restart().asMilliseconds();
+		while(elapsedTime>frameTime){
+			elapsedTime-=frameTime;
+			//UPDATE CODE
+			sf::View gCam = sfmlWin.getView();
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
+				gCam.zoom(0.99);
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
+				gCam.zoom(1.01);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+				gCam.move(0, -5);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+				gCam.move(-5, 0);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+				gCam.move(0, 5);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+				gCam.move(5, 0);
+			}
+			sfmlWin.setView(gCam);
+			update();
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
-			gCam.zoom(1.01);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-			gCam.move(0, -1);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-			gCam.move(-1, 0);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
-			gCam.move(0, 1);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-			gCam.move(1, 0);
-		}
-		sfmlWin.setView(gCam);
-		//draw
+		// DRAW CODE
 		sfmlWin.clear();
 		for (int i = 0;i<regions.size();++i){
 			sfmlWin.draw(regions[i].line0, 2, sf::Lines);
@@ -240,11 +257,31 @@ int main(int argc, char** argv){
 		//for (int i=0;i<stars.size();++i){
 		//	sfmlWin.draw(&stars[i], 1, sf::Points);
 		//}
-		for(int i =0;i<planets.size();++i){
+		/*for(int i =0;i<planets.size();++i){
 			sfmlWin.draw(planets[i].getSprite());
-		}
+		}*/
 		//sfmlWin.draw(message);
+		sfmlWin.draw(ship->getSprite()); // TODO replace with draw();
 		sfmlWin.display();
 	}
+	// CLEAR POINTER MEMORY
+	txtab::close();
+	enth::close();
 	return 0;
+}
+
+void update(){
+	for (auto mit : enth::entityList){
+		for (auto vit : mit.second){
+			vit->update();
+		}
+	}
+}
+
+void draw(){
+	for (auto mit : enth::entityList){
+		for (auto vit : mit.second){
+			vit->draw();
+		}
+	}
 }
