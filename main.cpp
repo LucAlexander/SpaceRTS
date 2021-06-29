@@ -1,12 +1,10 @@
-#include <SFML/Graphics.hpp>
-#include <cassert>
-
 #include "rnd.h"
 #include "point.h"
 #include "triangulation.h"
 #include "nationGenerator.h"
 #include "regionMapping.h"
 #include "unit.h"
+#include "win.h"
 #include "entityHandler.h"
 
 #include <iostream>
@@ -15,17 +13,13 @@
 void update();
 void draw();
 
-
 int main(int argc, char** argv){
+	win::init();
+	
 	// MAPPING INSTANTIATION AND MAKING TRIANGLE MESH
 	RegionMapper mapper = RegionMapper(16);
 	std::vector<Partition> regions = mapper.generateTriangles(mapper.generatePoints());
 	
-	// WINDOW AND CAMERA INSTANTIATIOIN
-	sf::RenderWindow sfmlWin(sf::VideoMode(1920, 1080), "Space RTS demo", sf::Style::Titlebar | sf::Style::Close);
-	sf::View cam(sf::Vector2f(800, 300), sf::Vector2f(512, 288));
-	sfmlWin.setView(cam);
-
 	/* CIV NAME GENERATION
 	sf::Font font;
 	if (!font.loadFromFile("FSEX300.ttf")){
@@ -59,17 +53,17 @@ int main(int argc, char** argv){
 	std::vector<Planet> planets = mapper.generatePlanetPositions(64, 8, 5, 25);
 	
 	// UNIT BOID TESTING
-	Unit* ship = enth::instanceCreate(Unit());
+	Unit* ship = enth::instanceCreate(64, 64, Unit());
 
 	sf::Clock clock;
 	sf::Int32 elapsedTime;
 	int frameTime = 1000/utils::TPS;
-	while(sfmlWin.isOpen()){
+	while(win::window.isOpen()){
 		sf::Event e;
-		while(sfmlWin.pollEvent(e)){
+		while(win::window.pollEvent(e)){
 			switch(e.type){
 				case sf::Event::Closed:
-					sfmlWin.close();
+					win::window.close();
 				break;
 			}
 		}
@@ -77,7 +71,7 @@ int main(int argc, char** argv){
 		while(elapsedTime>frameTime){
 			elapsedTime-=frameTime;
 			//UPDATE CODE
-			sf::View gCam = sfmlWin.getView();
+			sf::View gCam = win::window.getView();
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
 				gCam.zoom(0.99);
 			}
@@ -96,25 +90,25 @@ int main(int argc, char** argv){
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
 				gCam.move(5, 0);
 			}
-			sfmlWin.setView(gCam);
+			win::window.setView(gCam);
 			update();
 		}
 		// DRAW CODE
-		sfmlWin.clear();
+		win::window.clear();
 		for (int i = 0;i<regions.size();++i){
-			sfmlWin.draw(regions[i].line0, 2, sf::Lines);
-			sfmlWin.draw(regions[i].line1, 2, sf::Lines);
-			sfmlWin.draw(regions[i].line2, 2, sf::Lines);
+			win::window.draw(regions[i].line0, 2, sf::Lines);
+			win::window.draw(regions[i].line1, 2, sf::Lines);
+			win::window.draw(regions[i].line2, 2, sf::Lines);
 		}
 		//for (int i=0;i<stars.size();++i){
-		//	sfmlWin.draw(&stars[i], 1, sf::Points);
+		//	win::window.draw(&stars[i], 1, sf::Points);
 		//}
 		/*for(int i =0;i<planets.size();++i){
-			sfmlWin.draw(planets[i].getSprite());
+		  win::window.draw(planets[i].getSprite());
 		}*/
-		//sfmlWin.draw(message);
-		sfmlWin.draw(ship->getSprite()); // TODO replace with draw();
-		sfmlWin.display();
+		//win::window.draw(message);
+		draw();
+		win::window.display();
 	}
 	// CLEAR POINTER MEMORY
 	txtab::close();

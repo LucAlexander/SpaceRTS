@@ -4,16 +4,12 @@
 
 Unit::Unit():
 	Entity(),
-	spd(1.0),
-	sprite()
+	spd(3)
 {
-	sprite.setTexture(*txtab::load("ship.png"));
-	sprite.setPosition(64, 64);
-	sprite.setRotation(0);
+	setTexture("ship.png");
 }
 
 void Unit::update(){
-	//turn(1);
 	move();
 }
 
@@ -23,26 +19,8 @@ void Unit::move(){
 	sprite.move(xvec, yvec);
 }
 
-void Unit::setAngle(int ang){
-	sprite.setRotation(ang);
-}
-
 void Unit::turn(int ang){
 	sprite.rotate(ang);
 }
 
-float Unit::getX()const{
-	return sprite.getPosition().x;
-}
 
-float Unit::getY()const{
-	return sprite.getPosition().y;
-}
-
-int Unit::getAngle()const{
-	return sprite.getRotation();
-}
-
-sf::Sprite Unit::getSprite()const{
-	return sprite;
-}
