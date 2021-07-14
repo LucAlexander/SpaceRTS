@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "utils.h"
 #include "textureTable.h"
 
 class Entity{
@@ -12,16 +13,29 @@ public:
 	virtual void update();
 	virtual void draw();
 	virtual void drawGui();
+	
 	float getX()const;
 	float getY()const;
+	float getOriginX()const;
+	float getOriginY()const;
 	void setPosition(float xx, float yy);
-	float getAngle()const;
-	void setAngle(float ang);
+
+	utils::Rect getGlobalHitbox()const;
+	utils::Rect getHitbox()const;
+	void setHitbox(float x, float y, float xx, float yy);
+
+	int getDirection()const;
+	void setDirection(int ang);
+	
 	sf::Sprite getSprite()const;
 	void setTexture(const char* dir);
+	
+	int getDepth()const;
 protected:
 	sf::Sprite sprite;
+	utils::Rect hitbox;
 	int depth;
+	int direction;
 };
 
 #endif

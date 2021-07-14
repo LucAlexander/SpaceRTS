@@ -11,7 +11,7 @@ namespace win{
 	const int height = 1080;
 	const int vwidth = 512;
 	const int vheight = 288;
-	void init();
+	void init(const char* title);
 }
 
 #endif

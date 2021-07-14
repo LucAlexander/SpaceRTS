@@ -7,10 +7,13 @@ class Unit : public Entity{
 public:
 	Unit();
 	void update();
-	void move();
-	void turn(int ang);
 private:
 	float spd;
+	int viewAngle;
+	int divergeAngle;
+	int convergeAngle;
+	int alignAngle;
+	int comfortRange;
 };
 
 #endif
