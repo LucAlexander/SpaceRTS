@@ -149,21 +149,50 @@ namespace enth{
 		}
 		return static_cast<T*>(other);
 	}
+	
+	template<class T>
+	bool pointCollides(float x, float y, T* instance){
+		utils::Rect hb = instance->getGlobalHitbox();
+		return utils::pointInRect(utils::v2(x, y), hb);
+	}
 
-	/*template<class T>
+
+	template<class T>
 	T* pointCollides(float x, float y, T type){
 		std::vector<Entity*> mit(entityList[getTypeId(type)]);
 		for (int i = 0;i<mit.size();++i){
-			//TODO check hitbox collisions	
+			if (pointCollides(x, y, mit[i])){
+				return static_cast<T*>(mit[i]);
+			}
 		}
 		return nullptr;
 	}
 
 	template<class T>
-	bool pointCollides(float x, float y, T* instance){
-		// TODO point collides with passed instance
-		return false;
-	}*/
+	bool collides(T* instance, T* other){
+		utils::Rect ihb = instance->getGlobalHitbox();
+		utils::Rect ohb = other->getGlobalHitbox();
+		utils::v2 bl(ihb.start.x, ihb.end.y);
+		utils::v2 tr(ihb.end.x, ihb.start.y);
+		return utils::pointInRect(ihb.start, ohb) || 
+			utils::pointInRect(ihb.end, ohb) ||
+			utils::pointInRect(bl, ohb) ||
+			utils::pointInRect(tr, ohb);
+	}
+	
+	template<class T>
+	T* collides(T* instance, T type){
+		std::vector<Entity*> mit(entityList[getTypeId(type)]);
+		for (int i = 0;i<mit.size();++i){
+			T* other = static_cast<T*>(mit[i]);
+			if (instance != other){
+				if (collides(instance, other)){
+					return other;
+				}
+			}
+		}
+		return nullptr;
+	}
 
 	int instanceCount();
 	void close();

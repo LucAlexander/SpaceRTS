@@ -1,7 +1,8 @@
 #include "unit.h"
-#include "utils.h"
+#include "../e/utils.h"
+#include "../e/rnd.h"
 #include "unitTarget.h"
-#include "entityHandler.h"
+#include "../e/entityHandler.h"
 
 Unit::Unit():
 	Entity(),
@@ -14,14 +15,22 @@ Unit::Unit():
 {
 	setTexture("ship.png");
 	sprite.setOrigin(8, 8);
+	direction = rnd::iRange(0, 359);
 }
 
 void Unit::update(){
 	float x = getX();
 	float y = getY();
+	/*
 	UnitTarget* target = enth::nearest(x, y, UnitTarget());
 	if (target != nullptr){
 		direction = utils::pointDirection(x, y, target->getX(), target->getY());
+	}*/
+	float xvec = utils::lengthDirX(spd, direction);
+	float yvec = utils::lengthDirY(spd, direction);
+	sprite.move(xvec, yvec);
+	if (enth::collides(this, Unit())!=nullptr){
+		enth::destroy(this);
 	}
 	// wrap map borders
 	if (x < 0 ){
@@ -36,8 +45,5 @@ void Unit::update(){
 	else if(y > 1024){
 		sprite.setPosition(x, 0);
 	}
-	float xvec = utils::lengthDirX(spd, direction);
-	float yvec = utils::lengthDirY(spd, direction);
-	sprite.move(xvec, yvec);
 }
 

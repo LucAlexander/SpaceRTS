@@ -25,6 +25,7 @@ namespace utils{
 	int sign(int val);
 	float distancePoint(float x, float y, float xx, float yy);
 	int pointDirection(float x, float y, float xx, float yy);
+	bool pointInRect(v2, Rect);
 }
 
 #endif

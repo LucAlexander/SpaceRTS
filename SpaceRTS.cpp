@@ -1,14 +1,14 @@
-#include "game.h"
+#include "e/game.h"
 
-#include "rnd.h"
-#include "point.h"
-#include "triangulation.h"
-#include "nationGenerator.h"
-#include "regionMapping.h"
-#include "unit.h"
-#include "unitTarget.h"
-#include "win.h"
-#include "entityHandler.h"
+#include "e/rnd.h"
+#include "o/point.h"
+#include "o/triangulation.h"
+#include "o/nationGenerator.h"
+#include "o/regionMapping.h"
+#include "o/unit.h"
+#include "o/unitTarget.h"
+#include "e/win.h"
+#include "e/entityHandler.h"
 
 int main(int argc, char** argv){
 	Game SpaceRTS = Game("SpaceRTS");
@@ -50,10 +50,8 @@ int main(int argc, char** argv){
 		std::vector<Planet> planets = mapper.generatePlanetPositions(64, 8, 5, 25);
 		
 		// UNIT BOID TESTING
-		for (int i = 0;i<1;++i){
+		for (int i = 0;i<60;++i){
 			Unit* instance = enth::create(rnd::iRange(0, 32)*6, rnd::iRange(0, 32)*6, Unit());
-			int angle = rnd::iRange(0, 24)*15;
-			instance->setDirection(angle);
 		}
 		UnitTarget* uTarget = enth::create(512, 512, UnitTarget());
 	});

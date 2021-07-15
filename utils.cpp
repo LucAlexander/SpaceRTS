@@ -48,3 +48,9 @@ int utils::pointDirection(float x, float y, float xx, float yy){
 	val = (val<0)?-val:360-val;
 	return (int)(val) % 360;
 }
+
+bool utils::pointInRect(v2 p, Rect r){
+	return (p.x >= r.start.x && p.x <= r.end.x) && 
+		(p.y >= r.start.y && p.y <= r.end.y);
+
+}
