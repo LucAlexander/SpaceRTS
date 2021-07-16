@@ -5,7 +5,7 @@ ECHO ===========COMPILE STARTED=================================
 SET objectFiles=SpaceRTS.cpp
 SET engineFiles=
 SET oFile=unit unitTarget point planet partition triangulation regionMapping nationGenerator
-SET eFile=game.cpp game.h rnd.cpp rnd.h utils.cpp utils.h win.cpp win.h entity.cpp entity.h entityHandler.cpp entityHandler.h textureTable.cpp textureTable.h 
+SET eFile=game.cpp game.h rnd.cpp rnd.h utils.cpp utils.h input.cpp input.h win.cpp win.h entity.cpp entity.h entityHandler.cpp entityHandler.h textureTable.cpp textureTable.h 
 SET oPref=o/
 SET ePref=e/
 SET srcSuf=.cpp

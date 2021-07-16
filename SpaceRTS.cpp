@@ -50,7 +50,7 @@ int main(int argc, char** argv){
 		std::vector<Planet> planets = mapper.generatePlanetPositions(64, 8, 5, 25);
 		
 		// UNIT BOID TESTING
-		for (int i = 0;i<60;++i){
+		for (int i = 0;i<1;++i){
 			Unit* instance = enth::create(rnd::iRange(0, 32)*6, rnd::iRange(0, 32)*6, Unit());
 		}
 		UnitTarget* uTarget = enth::create(512, 512, UnitTarget());
