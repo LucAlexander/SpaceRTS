@@ -1,8 +1,12 @@
 #include "unit.h"
+#include "unitTarget.h"
+
 #include "../e/utils.h"
 #include "../e/rnd.h"
-#include "unitTarget.h"
 #include "../e/entityHandler.h"
+#include "../e/input.h"
+
+#include <iostream>
 
 Unit::Unit():
 	Entity(),
@@ -26,6 +30,12 @@ void Unit::update(){
 	if (target != nullptr){
 		direction = utils::pointDirection(x, y, target->getX(), target->getY());
 	}*/
+	if (inp::mouseScroll(1)){
+		std::cout << "K";
+	}
+	else if (inp::mouseScroll(-1)){
+		std::cout << "M";
+	}
 	float xvec = utils::lengthDirX(spd, direction);
 	float yvec = utils::lengthDirY(spd, direction);
 	sprite.move(xvec, yvec);
