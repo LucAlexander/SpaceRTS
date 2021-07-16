@@ -1,6 +1,9 @@
 #include "game.h"
 #include "win.h"
 #include "entityHandler.h"
+#include "input.h"
+
+#include <iostream>
 
 Game::Game():
 	Game("demo")
@@ -21,22 +24,22 @@ void Game::setInitCode(std::function<void()> code){
 
 void Game::update(){
 	sf::View gCam = win::window.getView();
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
+	if (inp::keyHeld(sf::Keyboard::E)){
 		gCam.zoom(0.99);
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
+	else if (inp::keyHeld(sf::Keyboard::Q)){
 		gCam.zoom(1.01);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+	if (inp::keyHeld(sf::Keyboard::W)){
 		gCam.move(0, -5);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+	if (inp::keyHeld(sf::Keyboard::A)){
 		gCam.move(-5, 0);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+	if (inp::keyHeld(sf::Keyboard::S)){
 		gCam.move(0, 5);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+	if (inp::keyHeld(sf::Keyboard::D)){
 		gCam.move(5, 0);
 	}
 	win::window.setView(gCam);
@@ -90,6 +93,21 @@ void Game::loop(){
 				case sf::Event::Closed:
 					win::window.close();
 				break;
+				case sf::Event::KeyPressed:
+					inp::keyDownEvent(e.key.code);
+				break;
+				case sf::Event::KeyReleased:
+					inp::keyUpEvent(e.key.code);
+				break;
+				case sf::Event::MouseButtonPressed:
+					inp::mouseDownEvent(e.mouseButton.button);
+				break;
+				case sf::Event::MouseButtonReleased:
+					inp::mouseUpEvent(e.mouseButton.button);
+				break;
+				case sf::Event::MouseWheelMoved:
+					inp::mouseScrollEvent(e.mouseWheel.delta);
+				break;
 			}
 		}
 		elapsedTime += clock.restart().asMilliseconds();
@@ -97,6 +115,7 @@ void Game::loop(){
 		while(elapsedTime>frameTime){
 			elapsedTime-=frameTime;
 			update();
+			inp::newFrame();
 		}
 		// DRAW CODE
 		win::window.clear();
