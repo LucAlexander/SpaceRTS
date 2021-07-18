@@ -2,6 +2,7 @@
 #define UNIT_H
 
 #include "../e/entity.h"
+#include "../e/animator.h"
 
 class Unit : public Entity{
 public:
@@ -14,6 +15,7 @@ private:
 	int convergeAngle;
 	int alignAngle;
 	int comfortRange;
+	Animator animHandler;
 };
 
 #endif
