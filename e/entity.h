@@ -19,6 +19,8 @@ public:
 	float getOriginX()const;
 	float getOriginY()const;
 	void setPosition(float xx, float yy);
+	void setX(float yy);
+	void setY(float yy);
 
 	utils::Rect getGlobalHitbox()const;
 	utils::Rect getHitbox()const;
@@ -34,6 +36,7 @@ public:
 protected:
 	sf::Sprite sprite;
 	utils::Rect hitbox;
+	float x, y;
 	int depth;
 	int direction;
 };

@@ -82,6 +82,9 @@ namespace enth{
 			}
 			n--;
 		}
+		if (instance == other){
+			return nullptr;
+		}
 		return static_cast<T*>(other);
 	}
 	
@@ -126,6 +129,9 @@ namespace enth{
 			}
 			n--;
 		}
+		if (instance == other){
+			return nullptr;
+		}
 		return static_cast<T*>(other);
 	}
 	
@@ -168,9 +174,13 @@ namespace enth{
 		return nullptr;
 	}
 
-	template<class T>
-	bool collides(T* instance, T* other){
+	template<class T, class C>
+	bool collides(C* instance, T* other, float xoff=0, float yoff=0){
 		utils::Rect ihb = instance->getGlobalHitbox();
+		ihb.start.x += xoff;
+		ihb.end.x += xoff;
+		ihb.start.y += yoff;
+		ihb.end.y += yoff;
 		utils::Rect ohb = other->getGlobalHitbox();
 		utils::v2 bl(ihb.start.x, ihb.end.y);
 		utils::v2 tr(ihb.end.x, ihb.start.y);
@@ -180,13 +190,13 @@ namespace enth{
 			utils::pointInRect(tr, ohb);
 	}
 	
-	template<class T>
-	T* collides(T* instance, T type){
+	template<class T, class C>
+	T* collides(C* instance, T type, float xoff=0, float yoff=0){
 		std::vector<Entity*> mit(entityList[getTypeId(type)]);
 		for (int i = 0;i<mit.size();++i){
 			T* other = static_cast<T*>(mit[i]);
 			if (instance != other){
-				if (collides(instance, other)){
+				if (collides(instance, other, xoff, yoff)){
 					return other;
 				}
 			}

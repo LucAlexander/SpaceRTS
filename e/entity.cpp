@@ -4,6 +4,8 @@
 Entity::Entity():
 	sprite(),
 	hitbox(0, 0, 0, 0),
+	x(0),
+	y(0),
 	depth(0),
 	direction(0)
 {}
@@ -14,6 +16,7 @@ void Entity::update(){}
 
 void Entity::draw(){
 	sprite.setRotation(-direction);
+	sprite.setPosition(x, y);
 	win::window.draw(sprite);
 }
 
@@ -59,15 +62,24 @@ void Entity::setHitbox(float x1, float y1, float x2, float y2){
 }
 
 void Entity::setPosition(float xx, float yy){
-	sprite.setPosition(xx, yy);
+	x = xx;
+	y = yy;
 }
 
 float Entity::getX()const{
-	return sprite.getPosition().x;
+	return x;
 }
 
 float Entity::getY()const{
-	return sprite.getPosition().y;
+	return y;
+}
+
+void Entity::setX(float xx){
+	x = xx;
+}
+
+void Entity::setY(float yy){
+	y = yy;
 }
 
 int Entity::getDirection()const{
