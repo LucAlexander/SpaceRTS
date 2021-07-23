@@ -8,11 +8,14 @@
 
 UnitTarget::UnitTarget():
 	Entity()
-{}
+{
+	setHitbox(0, 0, 16, 16);
+}
 
 void UnitTarget::update(){
 	if (inp::keyPressed(sf::Keyboard::N)){
 		x = rnd::iRange(0, 32)*32;
 		y = rnd::iRange(0, 32)*32;
+		enth::create(x, y, PartSys<TestPart>());
 	}
 }
