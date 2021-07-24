@@ -12,7 +12,10 @@ Particle::Particle(float x, float y):
 	anim(),
 	spd(0.0),
 	direction(0),
-	life(0)
+	life(0),
+	directionForce(0),
+	spdForceAdd(0),
+	spdForceMult(1)
 {
 	sprite.setPosition(x, y);
 }
@@ -22,9 +25,14 @@ bool Particle::alive()const{
 }
 
 void Particle::update(){
+	// apply movement
 	float xvec = utils::lengthDirX(spd, direction);
 	float yvec = utils::lengthDirY(spd, direction);
 	sprite.move(xvec, yvec);
+	// apply forces on variables
+	spd += spdForceAdd;
+	spd *= spdForceMult;
+	direction += directionForce;
 	life--;
 }
 
@@ -37,4 +45,14 @@ void Particle::setTexture(const char* dir){
 	sprite.setTexture(*t);
 }
 
+void Particle::setDirectionForce(int f){
+	directionForce = f;
+}
 
+void Particle::setAdditiveSpdForce(float f){
+	spdForceAdd = f;
+}
+
+void Particle::setMultiplicativeSpdForce(float f){
+	spdForceMult = f;
+}

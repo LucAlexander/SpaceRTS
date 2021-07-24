@@ -10,6 +10,9 @@ public:
 	Particle(float xx, float yy);
 	bool alive()const;
 	void setTexture(const char* dir);
+	void setDirectionForce(int f);
+	void setAdditiveSpdForce(float f);
+	void setMultiplicativeSpdForce(float f);
 	virtual void update();
 	virtual void draw();
 protected:
@@ -18,6 +21,10 @@ protected:
 	float spd;
 	int direction;
 	int life;
+	// modification variables
+	int directionForce;
+	float spdForceAdd;
+	float spdForceMult;
 };
 
 #endif

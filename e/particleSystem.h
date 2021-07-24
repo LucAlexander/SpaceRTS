@@ -14,6 +14,8 @@ public:
 	PartSys(bool r, int l, int ppe, int mp, int ed);
 	void update();
 	void draw();
+	void setBurst(int ppe);
+	void setStream(int life, int ppe, int mp, int ed);
 private:
 	void handleParticleEvent(int index, T* particle);
 	void destroyCheck();
@@ -49,6 +51,27 @@ template<class T>
 PartSys<T>::PartSys():
 	PartSys(true, -1, 5, 256, -1)
 {}
+
+template<class T>
+void PartSys<T>::setBurst(int ppe){
+	life = -1;
+	emitDelay = -1;
+	maxParts = ppe;
+	partsPerEmit = ppe;
+	burst = true;
+}
+
+template<class T>
+void PartSys<T>::setStream(int lf, int ppe, int mp, int ed){
+	life = lf;
+	partsPerEmit = ppe;
+	maxParts = mp;
+	emitDelay = ed;
+	burst = false;
+	if(partsPerEmit > maxParts){
+		partsPerEmit = maxParts;
+	}
+}
 
 template<class T>
 void PartSys<T>::handleParticleEvent(int index, T* particle){
