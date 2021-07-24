@@ -22,7 +22,9 @@ public:
 
 		spd = rnd::iRange(1, 3);
 		direction = (rnd::iRange(0, 15)*24) + rnd::iRange(0, 15);
-		life = rnd::iRange(1, 4) * 50;
+		life = rnd::iRange(1, 3) * (utils::TPS/2);
+
+		directionForce = 1;
 	}
 };
 #endif

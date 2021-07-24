@@ -16,6 +16,7 @@ void UnitTarget::update(){
 	if (inp::keyPressed(sf::Keyboard::N)){
 		x = rnd::iRange(0, 32)*32;
 		y = rnd::iRange(0, 32)*32;
-		enth::create(x, y, PartSys<TestPart>());
+		PartSys<TestPart>* ps = enth::create(x, y, PartSys<TestPart>());
+		ps->setStream(200, 10, 256, 20);
 	}
 }
