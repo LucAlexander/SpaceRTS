@@ -13,10 +13,6 @@
 int main(int argc, char** argv){
 	Game SpaceRTS = Game("SpaceRTS");
 	SpaceRTS.setInitCode([](){
-		// MAPPING INSTANTIATION AND MAKING TRIANGLE MESH
-		RegionMapper mapper = RegionMapper(16);
-		std::vector<Partition> regions = mapper.generateTriangles(mapper.generatePoints());
-		
 		/* CIV NAME GENERATION
 		sf::Font font;
 		if (!font.loadFromFile("FSEX300.ttf")){
@@ -30,6 +26,11 @@ int main(int argc, char** argv){
 		sf::Text message(name, font);
 		*/
 
+		// MAPPING INSTANTIATION AND MAKING TRIANGLE MESH
+		RegionMapper mapper = RegionMapper(16);
+		std::vector<Partition> regions = mapper.generateTriangles(mapper.generatePoints());
+		
+		
 		// GALAXY POINT GENERATION
 		int density, spirals;
 		density = rnd::choose<int>({64, 80, 96, 112, 128});
@@ -47,13 +48,14 @@ int main(int argc, char** argv){
 		}
 		
 		// PLANET POINT INSTANTIATION
-		std::vector<Planet> planets = mapper.generatePlanetPositions(64, 8, 5, 25);
+		std::vector<Planet*> planets = mapper.generatePlanetPositions(64, 8, 5, 25);
 		
 		// UNIT BOID TESTING
-		for (int i = 0;i<1;++i){
+		/*for (int i = 0;i<10;++i){
 			Unit* instance = enth::create(rnd::iRange(0, 32)*6, rnd::iRange(0, 32)*6, Unit());
 		}
 		UnitTarget* uTarget = enth::create(512, 512, UnitTarget());
+		*/
 	});
 	SpaceRTS.loop();
 	SpaceRTS.close();
