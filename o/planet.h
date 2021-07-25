@@ -1,19 +1,18 @@
 #ifndef PLANET_H
 #define PLANET_H
 
-#include <SFML/Graphics.hpp>
+#include "../e/entity.h"
 
-class Planet{
+class Planet : public Entity{
 public:
 	Planet();
-	Planet(int x, int y, int r);
-	sf::CircleShape getSprite();
+	void draw();
 	float getRadius();
 	void setRadius(float r);
 	bool intersects(float xx, float yy, float rr);
-	bool intersects(Planet);
+	bool intersects(Planet*);
 private:
-	sf::CircleShape sprite;
+	float rad;
 };
 
 #endif

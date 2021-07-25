@@ -2,6 +2,7 @@
 #include "../e/rnd.h"
 #include "triangulation.h"
 #include "../e/utils.h"
+#include "../e/entityHandler.h"
 
 RegionMapper::RegionMapper():
 	mapSize(8),
@@ -50,32 +51,37 @@ std::vector<Point> RegionMapper::generatePoints(){
 	return points;
 }
 
-std::vector<Planet> RegionMapper::generatePlanetPositions(int count, int sepMin, int minSize, int maxSize){
+std::vector<Planet*> RegionMapper::generatePlanetPositions(int count, int sepMin, int minSize, int maxSize){
 	count /= 2;
 	int dist = mapSize/2;
 	minSize += sepMin;
 	maxSize += sepMin;
-	std::vector<Planet> planets(count*2, Planet());
+	std::vector<Planet*> planets(count*2, nullptr);
 	for (int i = 0;i<count;++i){
 		int posX = rnd::iRange(0, partitionSize);
 		int posY = rnd::iRange(0, partitionSize);
 		posX += (rnd::iRange(1, dist-1) * partitionSize);
 		posY += (rnd::iRange(1, mapSize-1) * partitionSize);
 		int rad = rnd::iRange(minSize, maxSize);
-		planets[i] = Planet(posX, posY, rad);
+		if (planets[i] != nullptr){
+			enth::destroy(planets[i]);
+		}
+		planets[i] = enth::create(posX, posY, Planet());
+		planets[i]->setRadius(rad);
 		bool collides = false;
 		for (int k = 0;!collides && k<i;++k){
-			if (planets[k].intersects(posX, posY, rad)){
+			if (planets[k]->intersects(posX, posY, rad)){
 				i--;
 				collides = true;
 			}
 		}
 	}
 	for(int i = 0;i<count;++i){
-		planets[i].setRadius(planets[i].getRadius()-sepMin);
-		sf::Vector2f pos = planets[i].getSprite().getPosition();
-		float rad = planets[i].getRadius();
-		planets[count+i] = Planet((mapSize*partitionSize)-pos.x-(rad*2), (mapSize*partitionSize)-pos.y-(rad*2), rad);
+		planets[i]->setRadius(planets[i]->getRadius()-sepMin);
+		utils::v2 pos(planets[i]->getX(), planets[i]->getY());
+		float rad = planets[i]->getRadius();
+		planets[count+i] = enth::create((mapSize*partitionSize)-pos.x-(rad*2), (mapSize*partitionSize)-pos.y-(rad*2), Planet());
+		planets[count+i]->setRadius(rad);
 	}
 	return planets;
 }
