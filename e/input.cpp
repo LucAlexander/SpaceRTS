@@ -21,11 +21,11 @@ void inp::newFrame(){
 }
 
 float inp::mouseX(){
-	return guiMouseX() + win::view.getSize().x;
+	return win::window.mapPixelToCoords(sf::Vector2i(guiMouseX(), guiMouseY())).x;
 }
 
 float inp::mouseY(){
-	return guiMouseY() + win::view.getSize().y;
+	return win::window.mapPixelToCoords(sf::Vector2i(guiMouseX(), guiMouseY())).y;
 }
 
 float inp::guiMouseX(){
