@@ -11,8 +11,11 @@ public:
 	void setRadius(float r);
 	bool intersects(float xx, float yy, float rr);
 	bool intersects(Planet*);
+	void toggleSelect();
 private:
 	float rad;
+	bool selected;
+	sf::CircleShape circle;
 };
 
 #endif

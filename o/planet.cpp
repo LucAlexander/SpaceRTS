@@ -5,15 +5,22 @@
 
 Planet::Planet():
 	Entity(),
-	rad(25)
+	rad(25),
+	selected(false),
+	circle(rad, 64)
 {
 	setHitbox(0, 0, rad*2, rad*2);
 }
 
 void Planet::draw(){
-	sf::CircleShape c(rad, 64);
-	c.setPosition(x, y);
-	win::window.draw(c);
+	if (selected){
+		circle.setFillColor(sf::Color::Blue);
+	}
+	else{
+		circle.setFillColor(sf::Color::White);
+	}
+	circle.setPosition(x, y);
+	win::window.draw(circle);
 }
 
 float Planet::getRadius(){
@@ -23,6 +30,7 @@ float Planet::getRadius(){
 void Planet::setRadius(float r){
 	setHitbox(0, 0, r*2, r*2);
 	rad = r;
+	circle.setRadius(rad);
 }
 
 bool Planet::intersects(float x2, float y2, float r2){
@@ -55,3 +63,7 @@ bool Planet::intersects(Planet* other){
 	return (rsq >= (xsq+ysq));
 }
 
+
+void Planet::toggleSelect(){
+	selected = !selected;
+}

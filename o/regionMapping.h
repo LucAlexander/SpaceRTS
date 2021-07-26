@@ -18,7 +18,7 @@ public:
 	void setParams(int ms, int ps, int ppc);
 	std::vector<Point> generatePoints();
 	std::vector<Point> generateStarPositions(int spirals, int density);
-	std::vector<Planet*> generatePlanetPositions(int count, int sepMin, int minSize, int maxSize);
+	void generatePlanetPositions(int count, int sepMin, int minSize, int maxSize);
 	std::vector<Partition> generateTriangles(std::vector<Point>);
 private:
 	int mapSize;

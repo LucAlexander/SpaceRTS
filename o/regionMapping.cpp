@@ -51,7 +51,7 @@ std::vector<Point> RegionMapper::generatePoints(){
 	return points;
 }
 
-std::vector<Planet*> RegionMapper::generatePlanetPositions(int count, int sepMin, int minSize, int maxSize){
+void RegionMapper::generatePlanetPositions(int count, int sepMin, int minSize, int maxSize){
 	count /= 2;
 	int dist = mapSize/2;
 	minSize += sepMin;
@@ -63,10 +63,12 @@ std::vector<Planet*> RegionMapper::generatePlanetPositions(int count, int sepMin
 		posX += (rnd::iRange(1, dist-1) * partitionSize);
 		posY += (rnd::iRange(1, mapSize-1) * partitionSize);
 		int rad = rnd::iRange(minSize, maxSize);
-		if (planets[i] != nullptr){
-			enth::destroy(planets[i]);
+		posX -= rad*2;
+		if (planets[i] == nullptr){
+			planets[i] = enth::create(posX, posY, Planet());
 		}
-		planets[i] = enth::create(posX, posY, Planet());
+		planets[i]->setX(posX);
+		planets[i]->setY(posY);
 		planets[i]->setRadius(rad);
 		bool collides = false;
 		for (int k = 0;!collides && k<i;++k){
@@ -83,7 +85,6 @@ std::vector<Planet*> RegionMapper::generatePlanetPositions(int count, int sepMin
 		planets[count+i] = enth::create((mapSize*partitionSize)-pos.x-(rad*2), (mapSize*partitionSize)-pos.y-(rad*2), Planet());
 		planets[count+i]->setRadius(rad);
 	}
-	return planets;
 }
 
 std::vector<Point> RegionMapper::generateStarPositions(int spirals, int density){
