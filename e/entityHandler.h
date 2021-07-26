@@ -62,6 +62,14 @@ namespace enth{
 		return entityList.count[getTypeId(T())].size();
 	}
 
+	template<class T>
+	T* get(T type, int i){
+		if (i<number(type)){
+			return static_cast<T*>(entityList[getTypeId(type)][i]);
+		}
+		return nullptr;
+	}
+
 	template<class T, class C>
 	T* nearest(C* instance, T type, int n = 1){
 		std::vector<Entity*> mit(entityList[getTypeId(type)]);
