@@ -14,3 +14,12 @@ SET cmpParams=-o run -IC:\codeProjects\nationGenerator\SFML-2.5.1\include -LC:\c
 SET stdTarget=-std=c++17
 ECHO ERRORS/WARNINGS:
 g++ %stdTarget% %objectFiles% %engineFiles% %cmpParams%
+if errorlevel 0 (
+	cls
+	color 0A
+	ECHO COMPILE TERMINATED WITH EXIT STATUS 0
+	ECHO.	
+	ECHO GENERATION OF "run.exe" WAS SUCCESSFUL
+	timeout /t 5 > nul
+)
+color
