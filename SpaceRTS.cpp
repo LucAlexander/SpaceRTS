@@ -7,6 +7,7 @@
 #include "o/regionMapping.h"
 #include "o/unit.h"
 #include "o/unitTarget.h"
+#include "o/player.h"
 #include "e/win.h"
 #include "e/entityHandler.h"
 
@@ -48,8 +49,10 @@ int main(int argc, char** argv){
 		}
 		
 		// PLANET POINT INSTANTIATION
-		std::vector<Planet*> planets = mapper.generatePlanetPositions(64, 8, 5, 25);
-		
+		mapper.generatePlanetPositions(64, 8, 5, 25);
+	
+		enth::create(0, 0, Player());
+
 		// UNIT BOID TESTING
 		/*for (int i = 0;i<10;++i){
 			Unit* instance = enth::create(rnd::iRange(0, 32)*6, rnd::iRange(0, 32)*6, Unit());
