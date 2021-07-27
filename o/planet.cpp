@@ -2,13 +2,18 @@
 #include "../e/win.h"
 #include "../e/input.h"
 #include "../e/entityHandler.h"
+#include "../e/rnd.h"
 
 Planet::Planet():
 	Entity(),
 	rad(25),
 	selected(false),
-	circle(rad, 64)
-{
+	circle(rad, 64),
+	faction(nullptr),
+	population(rnd::iRange(0, 50))
+{}
+
+void Planet::init(){
 	setHitbox(0, 0, rad*2, rad*2);
 }
 
@@ -66,4 +71,12 @@ bool Planet::intersects(Planet* other){
 
 void Planet::toggleSelect(){
 	selected = !selected;
+}
+
+void Planet::setFaction(Faction* f){
+	faction = f;
+}
+
+Faction* Planet::getFaction()const{
+	return faction;
 }

@@ -3,10 +3,17 @@
 #include "../e/entityHandler.h"
 #include "../e/input.h"
 
+#include <iostream>
+
 Player::Player():
 	Entity(),
-	faction("Earth")
+	faction(nullptr)
 {}
+
+void Player::init(){
+	faction = enth::create(0, 0, Faction());
+	std::cout << faction->getName() << "\n";
+}
 
 void Player::update(){
 	if (inp::mousePressed(sf::Mouse::Button::Left)){
@@ -17,6 +24,11 @@ void Player::update(){
 	}
 }
 
-std::string Player::getFactionName(){
+Faction* Player::getFaction()const{
 	return faction;
+}
+
+
+void Player::setFactionName(std::string name){
+	faction->setName(name);
 }

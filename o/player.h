@@ -2,14 +2,17 @@
 #define PLAYER_H
 
 #include "../e/entity.h"
+#include "faction.h"
 
 class Player : public Entity{
 public:
 	Player();
+	void init();
 	void update();
-	std::string getFactionName();
+	Faction* getFaction()const;
+	void setFactionName(std::string name);
 private:
-	std::string faction;
+	Faction* faction;
 };
 
 #endif

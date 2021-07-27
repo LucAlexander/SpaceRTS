@@ -7,6 +7,7 @@
 class Unit : public Entity{
 public:
 	Unit();
+	void init();
 	void update();
 private:
 	float spd;

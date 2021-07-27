@@ -8,7 +8,9 @@
 
 UnitTarget::UnitTarget():
 	Entity()
-{
+{}
+
+void UnitTarget::init(){
 	setHitbox(0, 0, 16, 16);
 }
 

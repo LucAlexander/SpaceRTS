@@ -8,6 +8,7 @@
 class UnitTarget : public Entity{
 public:
 	UnitTarget();
+	void init();
 	void update();
 
 	

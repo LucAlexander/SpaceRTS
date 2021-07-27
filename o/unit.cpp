@@ -17,9 +17,10 @@ Unit::Unit():
 	alignAngle(0),
 	comfortRange(64),
 	animHandler()
-{
+{}
 
 
+void Unit::init(){
 	setTexture("ship.png");
 	
 	setHitbox(0, 0, 16, 16);

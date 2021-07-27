@@ -6,7 +6,11 @@
 #include"../e/rnd.h"
 #include"nationGenerator.h"
 
-NationGenerator::NationGenerator(){
+NationGenerator::NationGenerator():
+	Entity()
+{}
+
+void NationGenerator::init(){
 	readIn("syllables.txt", syllables);
 	readIn("adjectives.txt", adjectives);
 	readIn("surroundings.txt", surroundings);
