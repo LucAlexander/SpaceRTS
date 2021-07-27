@@ -1,6 +1,8 @@
 #include "e/game.h"
-
 #include "e/rnd.h"
+#include "e/win.h"
+#include "e/entityHandler.h"
+
 #include "o/point.h"
 #include "o/triangulation.h"
 #include "o/nationGenerator.h"
@@ -8,18 +10,16 @@
 #include "o/unit.h"
 #include "o/unitTarget.h"
 #include "o/player.h"
-#include "e/win.h"
-#include "e/entityHandler.h"
 
 int main(int argc, char** argv){
 	Game SpaceRTS = Game("SpaceRTS");
 	SpaceRTS.setInitCode([](){
-		/* CIV NAME GENERATION
-		sf::Font font;
+		// CIV NAME GENERATION
+		enth::create(0, 0, NationGenerator());	
+		/*sf::Font font;
 		if (!font.loadFromFile("FSEX300.ttf")){
 			return -1;
 		}
-		NationGenerator gen;
 		std::string name = "";
 		for (int i = 0;i<6;++i){
 			name += gen.generate("indonesian") + "\n";
