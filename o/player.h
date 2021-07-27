@@ -3,6 +3,7 @@
 
 #include "../e/entity.h"
 #include "faction.h"
+#include "planet.h"
 
 class Player : public Entity{
 public:
@@ -13,6 +14,8 @@ public:
 	void setFactionName(std::string name);
 private:
 	Faction* faction;
+	void planetClickLogic(Planet* instance);
+	void setTarget(Planet* instance);
 };
 
 #endif

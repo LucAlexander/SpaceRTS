@@ -10,20 +10,22 @@ Planet::Planet():
 	selected(false),
 	circle(rad, 64),
 	faction(nullptr),
-	population(rnd::iRange(0, 50))
+	population(rnd::iRange(0, 50)),
+	target(nullptr)
 {}
 
 void Planet::init(){
 	setHitbox(0, 0, rad*2, rad*2);
 }
 
+void Planet::update(){
+	if (target != nullptr){
+		// TODO send out ships to that planet
+		target = nullptr;
+	}
+}
+
 void Planet::draw(){
-	if (selected){
-		circle.setFillColor(sf::Color::Blue);
-	}
-	else{
-		circle.setFillColor(sf::Color::White);
-	}
 	circle.setPosition(x, y);
 	win::window.draw(circle);
 }
@@ -68,9 +70,13 @@ bool Planet::intersects(Planet* other){
 	return (rsq >= (xsq+ysq));
 }
 
-
 void Planet::toggleSelect(){
 	selected = !selected;
+	circle.setFillColor((selected ? sf::Color::Blue : sf::Color::White));
+}
+
+bool Planet::getSelected()const{
+	return selected;
 }
 
 void Planet::setFaction(Faction* f){
@@ -79,4 +85,8 @@ void Planet::setFaction(Faction* f){
 
 Faction* Planet::getFaction()const{
 	return faction;
+}
+
+void Planet::setTarget(Planet* t){
+	target = t;
 }
