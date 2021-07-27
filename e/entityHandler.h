@@ -17,6 +17,7 @@ namespace enth{
 		instance->setPosition(xx, yy);
 		entityList[typeid(instance).name()].push_back(instance);
 		count++;
+		instance->init();
 		return instance;
 	}
 
@@ -63,7 +64,7 @@ namespace enth{
 	}
 
 	template<class T>
-	T* get(T type, int i){
+	T* get(T type, int i = 0){
 		if (i<number(type)){
 			return static_cast<T*>(entityList[getTypeId(type)][i]);
 		}

@@ -10,6 +10,7 @@ class Entity{
 public:
 	Entity();
 	virtual ~Entity();
+	virtual void init();
 	virtual void update();
 	virtual void draw();
 	virtual void drawGui();

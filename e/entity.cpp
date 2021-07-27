@@ -12,6 +12,8 @@ Entity::Entity():
 
 Entity::~Entity(){}
 
+void Entity::init(){}
+
 void Entity::update(){}
 
 void Entity::draw(){
