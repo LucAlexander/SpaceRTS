@@ -1,9 +1,12 @@
 #include "planet.h"
+#include "unit.h"
 #include "../e/win.h"
 #include "../e/input.h"
 #include "../e/entityHandler.h"
 #include "../e/rnd.h"
 #include "../e/textureTable.h"
+
+#include <algorithm>
 
 
 Planet::Planet():
@@ -12,7 +15,7 @@ Planet::Planet():
 	selected(false),
 	circle(rad, 64),
 	faction(nullptr),
-	population(rnd::iRange(0, 50)),
+	population(rad),
 	target(nullptr),
 	thickness(2),
 	selectThickness(4),
@@ -30,14 +33,46 @@ void Planet::init(){
 
 void Planet::update(){
 	if (target != nullptr){
-		// TODO send out ships to that planet
-		target = nullptr;
+		spawnUnits();
 	}
+	//TODO alarm to increment population
+	//population caps at diameter
 }
 
 void Planet::draw(){
 	circle.setPosition(x, y);
 	win::window.draw(circle);
+}
+
+void Planet::spawnUnits(){
+	int targetDir = utils::pointDirection(x, y, target->getX(), target->getY());
+	int offset = 0;
+	int offsetInc = 30;
+	int polarity = 1;
+	int placeDist = rad*2;
+	int placeOffset = 4;
+	placeDist += placeOffset;
+	int shipLoad = population - (population / 2);
+	int shipPartitionSize = 5;
+	population /= 2;
+	int tries = 0;
+	while (shipLoad > 0){
+		int popCount = std::min(shipPartitionSize, shipLoad);
+		shipLoad -= popCount;
+		int placeDir = (targetDir + (polarity * offset));
+		int posx = x + rad + utils::lengthDirX(placeDist + placeOffset, placeDir);
+		int posy = y + rad + utils::lengthDirY(placeDist + placeOffset, placeDir);
+		Unit* ship = enth::create(posx, posy, Unit());
+		ship->setTarget(target);
+		offset += ((tries % 2 == 0) ? offsetInc : 0);
+		polarity*=-1;
+		if (offset >= 90){
+			offset = 0;
+			placeDist += placeOffset;
+		}
+		tries ++;
+	}
+	target = nullptr;
 }
 
 float Planet::getRadius(){

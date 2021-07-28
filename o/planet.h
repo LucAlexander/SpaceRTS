@@ -20,6 +20,7 @@ public:
 	void setTarget(Planet* t);
 	Faction* getFaction()const;
 private:
+	void spawnUnits();
 	float rad;
 	bool selected;
 	sf::CircleShape circle;

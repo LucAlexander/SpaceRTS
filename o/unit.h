@@ -1,6 +1,8 @@
 #ifndef UNIT_H
 #define UNIT_H
 
+#include "planet.h"
+
 #include "../e/entity.h"
 #include "../e/animator.h"
 
@@ -9,6 +11,7 @@ public:
 	Unit();
 	void init();
 	void update();
+	void setTarget(Planet* t);
 private:
 	float spd;
 	int viewAngle;
@@ -17,6 +20,7 @@ private:
 	int alignAngle;
 	int comfortRange;
 	Animator animHandler;
+	Planet* target;
 };
 
 #endif

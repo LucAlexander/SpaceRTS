@@ -2,6 +2,7 @@
 #include "planet.h"
 #include "../e/entityHandler.h"
 #include "../e/input.h"
+#include "../e/debug.h"
 
 #include <iostream>
 
@@ -32,6 +33,10 @@ void Player::update(){
 		if (instance != nullptr){
 			setTarget(instance);
 		}
+	}
+	dbug::showHitboxes(false);
+	if(inp::keyHeld(sf::Keyboard::Key::Tab)){
+		dbug::showHitboxes(true);
 	}
 }
 

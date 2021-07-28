@@ -16,27 +16,26 @@ Unit::Unit():
 	convergeAngle(0),
 	alignAngle(0),
 	comfortRange(64),
-	animHandler()
+	animHandler(),
+	target(nullptr)
 {}
 
 
 void Unit::init(){
 	setTexture("ship.png");
 	
-	setHitbox(0, 0, 16, 16);
+	setHitbox(4, 4, 12, 12);
 	
 	sprite.setOrigin(8, 8);
 
-	direction = rnd::iRange(0, 359);
-	
 	animHandler = Animator(&sprite);
 	animHandler.addAnimation("fly", 0, 0, 16, 16, 2);
 }
 
 void Unit::update(){
-	UnitTarget* target = enth::nearest(x, y, UnitTarget());
+	// SET DIRECTION
 	if (target != nullptr){
-		direction = utils::pointDirection(x, y, target->getX(), target->getY());
+		direction = utils::pointDirection(x, y, target->getX() + target->getRadius(), target->getY()+target->getRadius());
 	}
 	// CREATE MOVEMENT VECTORS
 	float xvec = utils::lengthDirX(spd, direction);
@@ -60,19 +59,11 @@ void Unit::update(){
 		yvec = 0;
 	}
 	y += yvec;
-	// WRAPPING MAP BORDERS
-	if (x < 0 ){
-		x = 1024;
-	}
-	else if(x > 1024){
-		x = 0;
-	}
-	if (y < 0 ){
-		y = 1024;
-	}
-	else if(y > 1024){
-		y = 0;
-	}
 	// ANIMATE
 	animHandler.playAnimation("fly");
+}
+
+void Unit::setTarget(Planet* t){
+	target = t;
+	direction = utils::pointDirection(x, y, target->getX() + target->getRadius(), target->getY()+target->getRadius());
 }
