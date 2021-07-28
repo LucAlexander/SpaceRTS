@@ -13,9 +13,11 @@ Player::Player():
 void Player::init(){
 	faction = enth::create(0, 0, Faction());
 	std::cout << faction->getName() << "\n";
-	enth::get(Planet())->setFaction(faction);
-	std::cout << enth::get(Planet())->getX() << "\t";
-	std::cout << enth::get(Planet())->getY() << "\n";
+	for (int i = 0;i<4;++i){
+		enth::get(Planet(), i)->setFaction(faction);
+		std::cout << enth::get(Planet(), i)->getX() << "\t";
+		std::cout << enth::get(Planet(), i)->getY() << "\n";
+	}
 }
 
 void Player::update(){
@@ -43,6 +45,11 @@ void Player::planetClickLogic(Planet* instance){
 
 void Player::setTarget(Planet* instance){
 	int planetCount = enth::number(Planet());
+	if (instance->getFaction() == faction){
+		if (instance->getSelected()){
+			instance->toggleSelect();
+		}
+	}
 	for (int i =0;i<planetCount;++i){
 		Planet* pl = enth::get(Planet(), i);
 		if (pl != instance){

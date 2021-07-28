@@ -26,6 +26,10 @@ private:
 	Faction* faction;
 	int population;
 	Planet* target;
+	int thickness;
+	int selectThickness;
+	sf::Color selectedColor;
+	int vibranceCoef;
 };
 
 #endif

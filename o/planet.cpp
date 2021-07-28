@@ -3,6 +3,8 @@
 #include "../e/input.h"
 #include "../e/entityHandler.h"
 #include "../e/rnd.h"
+#include "../e/textureTable.h"
+
 
 Planet::Planet():
 	Entity(),
@@ -11,10 +13,18 @@ Planet::Planet():
 	circle(rad, 64),
 	faction(nullptr),
 	population(rnd::iRange(0, 50)),
-	target(nullptr)
+	target(nullptr),
+	thickness(2),
+	selectThickness(4),
+	selectedColor(),
+	vibranceCoef(47)
 {}
 
 void Planet::init(){
+	circle.setOutlineThickness(2);
+	circle.setOutlineColor(sf::Color::White);
+	circle.setTexture(txtab::load("planet.png"));
+	selectedColor = sf::Color::White;
 	setHitbox(0, 0, rad*2, rad*2);
 }
 
@@ -72,7 +82,8 @@ bool Planet::intersects(Planet* other){
 
 void Planet::toggleSelect(){
 	selected = !selected;
-	circle.setFillColor((selected ? sf::Color::Blue : sf::Color::White));
+	circle.setOutlineThickness(selected ? selectThickness : thickness);
+	circle.setOutlineColor(selected ? selectedColor : faction->getColor());
 }
 
 bool Planet::getSelected()const{
@@ -81,6 +92,11 @@ bool Planet::getSelected()const{
 
 void Planet::setFaction(Faction* f){
 	faction = f;
+	circle.setOutlineColor(faction->getColor());
+	selectedColor = faction->getColor();
+	selectedColor.r += vibranceCoef;
+	selectedColor.g += vibranceCoef;
+	selectedColor.b += vibranceCoef;
 }
 
 Faction* Planet::getFaction()const{
