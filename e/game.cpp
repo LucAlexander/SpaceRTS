@@ -66,6 +66,7 @@ void Game::draw(){
 		}
 	}
 	for (auto vit : order){
+		vit->draw();
 		float hbx, hby, hbw, hbh;
 		hbx = vit->getGlobalHitbox().start.x;
 		hby = vit->getGlobalHitbox().start.y;
@@ -73,9 +74,10 @@ void Game::draw(){
 		hbh = vit->getGlobalHitbox().end.y-hby;
 		sf::RectangleShape hb(sf::Vector2f(hbw, hbh));
 		hb.setPosition(sf::Vector2f(hbx, hby));
-		hb.setFillColor(sf::Color::Red);
+		hb.setOutlineThickness(1);
+		hb.setOutlineColor(sf::Color::White);
+		hb.setFillColor(sf::Color(0, 0, 0, 0));
 		win::window.draw(hb);
-		vit->draw();
 	}
 }
 
