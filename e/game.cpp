@@ -2,6 +2,7 @@
 #include "win.h"
 #include "entityHandler.h"
 #include "input.h"
+#include "debug.h"
 
 #include <iostream>
 
@@ -67,17 +68,19 @@ void Game::draw(){
 	}
 	for (auto vit : order){
 		vit->draw();
-		float hbx, hby, hbw, hbh;
-		hbx = vit->getGlobalHitbox().start.x;
-		hby = vit->getGlobalHitbox().start.y;
-		hbw = vit->getGlobalHitbox().end.x-hbx;
-		hbh = vit->getGlobalHitbox().end.y-hby;
-		sf::RectangleShape hb(sf::Vector2f(hbw, hbh));
-		hb.setPosition(sf::Vector2f(hbx, hby));
-		hb.setOutlineThickness(1);
-		hb.setOutlineColor(sf::Color::White);
-		hb.setFillColor(sf::Color(0, 0, 0, 0));
-		win::window.draw(hb);
+		if (dbug::showHb){
+			float hbx, hby, hbw, hbh;
+			hbx = vit->getGlobalHitbox().start.x;
+			hby = vit->getGlobalHitbox().start.y;
+			hbw = vit->getGlobalHitbox().end.x-hbx;
+			hbh = vit->getGlobalHitbox().end.y-hby;
+			sf::RectangleShape hb(sf::Vector2f(hbw, hbh));
+			hb.setPosition(sf::Vector2f(hbx, hby));
+			hb.setOutlineThickness(1);
+			hb.setOutlineColor(sf::Color::White);
+			hb.setFillColor(sf::Color(0, 0, 0, 0));
+			win::window.draw(hb);
+		}
 	}
 }
 
