@@ -213,6 +213,14 @@ namespace enth{
 		return nullptr;
 	}
 
+	template<class C, class T>
+	float distance(C* instance, T* other){
+		if(other != nullptr){
+			return utils::distancePoint(instance->getX(), instance->getY(), other->getX(), other->getY());
+		}
+		return -1;
+	}
+
 	int instanceCount();
 	void close();
 }
