@@ -19,6 +19,7 @@ public:
 	void setFaction(Faction*);
 	void setTarget(Planet* t);
 	Faction* getFaction()const;
+	void addPopulation(Faction* f, int pop);
 private:
 	void spawnUnits();
 	float rad;

@@ -8,7 +8,6 @@
 
 #include <algorithm>
 
-
 Planet::Planet():
 	Entity(),
 	rad(25),
@@ -46,14 +45,15 @@ void Planet::draw(){
 
 void Planet::spawnUnits(){
 	int targetDir = utils::pointDirection(x, y, target->getX(), target->getY());
-	int offset = 0;
-	int offsetInc = 30;
+	int offset = 8;
+	int offsetInc = (offset/rad)*30;
+	int offsetWiggle = 10;
+	int maxRot = 120;
 	int polarity = 1;
-	int placeDist = rad*2;
-	int placeOffset = 4;
-	placeDist += placeOffset;
+	int placeDist = rad;
+	int placeOffset = 16;
 	int shipLoad = population - (population / 2);
-	int shipPartitionSize = 5;
+	int shipPartitionSize = 1;
 	population /= 2;
 	int tries = 0;
 	while (shipLoad > 0){
@@ -63,16 +63,32 @@ void Planet::spawnUnits(){
 		int posx = x + rad + utils::lengthDirX(placeDist + placeOffset, placeDir);
 		int posy = y + rad + utils::lengthDirY(placeDist + placeOffset, placeDir);
 		Unit* ship = enth::create(posx, posy, Unit());
+		while (enth::collides(ship, Unit())){
+			ship->setX(utils::lengthDirX(1, placeDir));
+			ship->setY(utils::lengthDirY(1, placeDir));
+		}
 		ship->setTarget(target);
+		ship->setDepth(depth+1);
+		ship->setFaction(faction);
+		ship->setShipCount(popCount);
 		offset += ((tries % 2 == 0) ? offsetInc : 0);
 		polarity*=-1;
-		if (offset >= 90){
-			offset = 0;
+		if (offset >= maxRot){
+			offset = offsetInc;
+			offsetInc += offsetWiggle;
 			placeDist += placeOffset;
 		}
 		tries ++;
 	}
 	target = nullptr;
+}
+
+void Planet::addPopulation(Faction* f, int pop){
+	population += ((faction==f)?1:-1)*pop;
+	if (population <= 0){
+		population *= -1;
+		setFaction(f);
+	}
 }
 
 float Planet::getRadius(){
