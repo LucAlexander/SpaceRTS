@@ -13,10 +13,12 @@ void head(std::string task){
 int main(){
 	bool run = true;
 	std::string command;
+	std::string prevCommand = "";
 	std::string help = "";
-	help += " cmp  : compiles project in current directory\n";
-	help += " run  : runs compuled project in currect directory\n";
-	help += " exit : exits the engine program and returns to cmd\n";
+	help += " cmp     : compiles project in current directory\n";
+	help += " run     : runs compuled project in currect directory\n";
+	help += " exit    : exits the engine program and returns to cmd\n";
+	help += " [enter] : run the previous command again\n";
 	head("");
 	while(run){
 		std::cout << "\n > ";
@@ -25,6 +27,9 @@ int main(){
 		for (int i = 0; i < command.length(); ++i){
   			command[i] = tolower(command[i]);
   		}
+		if (command == ""){
+			command = prevCommand;
+		}
 		if (command == "h"){
 			std::cout << help;
 		}
@@ -48,6 +53,7 @@ int main(){
 		else{
 			std::cout << "COMMAND NOT RECOGNIZED\n";
 		}
+		prevCommand = command;
 	}
 	system("cls");
 	return 0;
