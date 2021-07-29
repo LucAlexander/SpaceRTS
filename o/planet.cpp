@@ -8,6 +8,8 @@
 
 #include <algorithm>
 
+#include <iostream>
+
 Planet::Planet():
 	Entity(),
 	rad(25),
@@ -64,8 +66,9 @@ void Planet::spawnUnits(){
 		int posy = y + rad + utils::lengthDirY(placeDist + placeOffset, placeDir);
 		Unit* ship = enth::create(posx, posy, Unit());
 		while (enth::collides(ship, Unit())){
-			ship->setX(utils::lengthDirX(1, placeDir));
-			ship->setY(utils::lengthDirY(1, placeDir));
+			std::cout << ship->getX() << ship->getY() << "\n";
+			ship->setX(posx + utils::lengthDirX(placeOffset, rnd::iRange(0, 11)*30));
+			ship->setY(posy + utils::lengthDirY(placeOffset, rnd::iRange(0, 11)*30));
 		}
 		ship->setTarget(target);
 		ship->setDepth(depth+1);
@@ -144,6 +147,7 @@ bool Planet::getSelected()const{
 void Planet::setFaction(Faction* f){
 	faction = f;
 	circle.setOutlineColor(faction->getColor());
+	circle.setFillColor(faction->getColor());
 	selectedColor = faction->getColor();
 	selectedColor.r += vibranceCoef;
 	selectedColor.g += vibranceCoef;

@@ -19,7 +19,10 @@ Unit::Unit():
 	target(nullptr),
 	firstStep(false),
 	shipCount(0),
-	faction(nullptr)
+	faction(nullptr),
+	spdMod(1),
+	dirAugCoef(90),
+	spdAugCoef(0.05f)
 {}
 
 void Unit::init(){
@@ -38,28 +41,27 @@ void Unit::init(){
 void Unit::update(){
 	// SET DIRECTION
 	if (target != nullptr){
-		direction = utils::pointDirection(x, y, target->getX() + target->getRadius(), target->getY()+target->getRadius());
+		int tempDir = utils::pointDirection(x, y, target->getX() + target->getRadius(), target->getY()+target->getRadius());
+		direction = utils::pointDirection(x, y, target->getX() + target->getRadius()+utils::lengthDirX(target->getRadius(), tempDir), target->getY()+target->getRadius() + utils::lengthDirY(target->getRadius(), tempDir));
 	}
 	Unit* near = enth::nearest(this, Unit());
 	int nearDist = enth::distance(this, near);
 	if (nearDist < comfortRange && nearDist != -1){
-		if (near->getTarget()==target && near->getFaction()==faction){
+		if (near->getFaction()==faction){
 			int nearDir = utils::pointDirection(x, y, near->getX(), near->getY());
 			int augDir = 180-utils::sign(direction-nearDir) < 180 ? 1 : -1;
-			direction += augDir*(nearDist * 0.2);
+			direction += augDir*(dirAugCoef/nearDist);
+			spdMod += spdAugCoef/nearDist;
 		}
 	}
 	// CREATE MOVEMENT VECTORS
-	float xvec = utils::lengthDirX(spd, direction);
-	float yvec = utils::lengthDirY(spd, direction);
+	float xvec = utils::lengthDirX(spd*spdMod, direction);
+	float yvec = utils::lengthDirY(spd*spdMod, direction);
+	spdMod = 1;
 	// COLLISIONS AND MOVEMENT
 	Unit* other = enth::collides(this, Unit(), xvec);
 	if (other != nullptr){
 		if (other->getTarget() == target){
-			float nth = xvec/10;
-			while(!enth::collides(this, other, nth)){
-				x += nth;
-			}
 			xvec = 0;
 		}
 	}
@@ -67,10 +69,6 @@ void Unit::update(){
 	other = enth::collides(this, Unit(), 0, yvec);
 	if (other != nullptr){
 		if (other->getTarget() == target){
-			float nth = yvec/10;
-			while(!enth::collides(this, other, 0, nth)){
-				y += nth;
-			}
 			yvec = 0;
 		}
 	}

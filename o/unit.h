@@ -30,6 +30,9 @@ private:
 	bool firstStep;
 	int shipCount;
 	Faction* faction;
+	float spdMod;
+	float dirAugCoef;
+	float spdAugCoef;
 };
 
 #endif
