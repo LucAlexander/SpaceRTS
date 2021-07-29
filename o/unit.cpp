@@ -5,8 +5,6 @@
 #include "../e/entityHandler.h"
 #include "../e/input.h"
 
-#include <iostream>
-
 Unit::Unit():
 	Entity(),
 	spd(1),

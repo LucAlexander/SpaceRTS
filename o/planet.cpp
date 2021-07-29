@@ -7,8 +7,7 @@
 #include "../e/textureTable.h"
 
 #include <algorithm>
-
-#include <iostream>
+#include <string>
 
 Planet::Planet():
 	Entity(),
@@ -21,28 +20,46 @@ Planet::Planet():
 	thickness(2),
 	selectThickness(4),
 	selectedColor(),
-	vibranceCoef(47)
+	vibranceCoef(47),
+	grow(),
+	popText(),
+	popFont()
 {}
 
 void Planet::init(){
 	circle.setOutlineThickness(2);
-	circle.setOutlineColor(sf::Color::White);
+	circle.setOutlineColor(sf::Color(104, 86, 66));
 	circle.setTexture(txtab::load("planet.png"));
 	selectedColor = sf::Color::White;
 	setHitbox(0, 0, rad*2, rad*2);
+	grow.set(utils::TPS);
+	popFont.loadFromFile("./f/FSEX300.ttf");
+	popText.setFont(popFont);
+	popText.setFillColor(sf::Color::White);
+	popText.setPosition(x+rad, y+rad);
 }
 
 void Planet::update(){
-	if (target != nullptr){
-		spawnUnits();
+	if (faction != nullptr){
+		// SPAWN UNITS
+		if (target != nullptr){
+			spawnUnits();
+		}
+		// GROW POPULATION
+		if (population < rad*2){
+			if (grow.ring()){
+				population++;
+				grow.reset();
+			}
+			grow.tick();
+		}
 	}
-	//TODO alarm to increment population
-	//population caps at diameter
+	popText.setString(std::to_string(population));
 }
-
 void Planet::draw(){
 	circle.setPosition(x, y);
 	win::window.draw(circle);
+	win::window.draw(popText);
 }
 
 void Planet::spawnUnits(){
@@ -66,7 +83,6 @@ void Planet::spawnUnits(){
 		int posy = y + rad + utils::lengthDirY(placeDist + placeOffset, placeDir);
 		Unit* ship = enth::create(posx, posy, Unit());
 		while (enth::collides(ship, Unit())){
-			std::cout << ship->getX() << ship->getY() << "\n";
 			ship->setX(posx + utils::lengthDirX(placeOffset, rnd::iRange(0, 11)*30));
 			ship->setY(posy + utils::lengthDirY(placeOffset, rnd::iRange(0, 11)*30));
 		}
@@ -102,6 +118,8 @@ void Planet::setRadius(float r){
 	setHitbox(0, 0, r*2, r*2);
 	rad = r;
 	circle.setRadius(rad);
+	population = rad;
+	popText.setPosition(x+rad, y+rad);
 }
 
 bool Planet::intersects(float x2, float y2, float r2){

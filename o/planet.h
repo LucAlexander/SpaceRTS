@@ -2,6 +2,7 @@
 #define PLANET_H
 
 #include "../e/entity.h"
+#include "../e/alarm.h"
 #include "faction.h"
 
 class Planet : public Entity{
@@ -32,6 +33,9 @@ private:
 	int selectThickness;
 	sf::Color selectedColor;
 	int vibranceCoef;
+	Alarm grow;
+	sf::Text popText;
+	sf::Font popFont;
 };
 
 #endif
