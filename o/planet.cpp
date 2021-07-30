@@ -16,33 +16,65 @@ Planet::Planet():
 	circle(rad, 64),
 	faction(nullptr),
 	population(rad),
+	resource(rad),
 	target(nullptr),
 	thickness(2),
 	selectThickness(4),
 	selectedColor(),
 	vibranceCoef(47),
 	grow(),
+	drain(),
 	popText(),
-	popFont()
+	resText(),
+	popFont(),
+	type(TYPE::POPULATION),
+	textScale(0.5),
+	popWeight(4)
 {}
 
 void Planet::init(){
-	sf::Color neutralColor = sf::Color(104, 86, 66);
-	circle.setOutlineThickness(2);
-	circle.setOutlineColor(neutralColor);
-	circle.setTexture(txtab::load("planet.png"));
-	selectedColor = sf::Color::White;
-	setHitbox(0, 0, rad*2, rad*2);
-	grow.set(utils::TPS);
+	// SETUP AND TEXT DEFAULT
 	popFont.loadFromFile("./f/FSEX300.ttf");
 	popText.setFont(popFont);
 	popText.setFillColor(sf::Color::White);
 	popText.setOutlineThickness(2);
-	popText.setOutlineColor(neutralColor);
-	popText.setScale(0.5, 0.5);
+	popText.setScale(textScale, textScale);
 	int tPosX = static_cast<int>(x+rad);
 	int tPosY = static_cast<int>(y+rad);
-	popText.setPosition(tPosX, tPosY);
+	popText.setPosition(tPosX, tPosY+rad);
+	sf::Color neutralColor;
+	// TYPE SPECIFIC
+	type = rnd::roll(popWeight) ? TYPE::RESOURCE : TYPE::POPULATION;
+	switch(type){
+		case TYPE::RESOURCE:{
+			drain.set(utils::TPS*2);
+			neutralColor = sf::Color(104, 104, 104);
+			circle.setTexture(txtab::load("resourcePlanet.png"));
+			resText.setFont(popFont);
+			resText.setFillColor(sf::Color::White);
+			resText.setOutlineThickness(2);
+			resText.setOutlineColor(neutralColor);
+			resText.setScale(textScale, textScale);
+			tPosY = static_cast<int>(y+(rad*2));
+			resText.setPosition(tPosX, tPosY);
+			population = 0;
+		}
+		break;
+		case TYPE::POPULATION:{
+			neutralColor = sf::Color(104, 86, 12);
+			circle.setTexture(txtab::load("planet.png"));
+			grow.set(utils::TPS);
+			resource = 0;
+		}
+		break;
+
+	}
+	// DEFAULT
+	popText.setOutlineColor(neutralColor);
+	circle.setOutlineThickness(2);
+	circle.setOutlineColor(neutralColor);
+	selectedColor = sf::Color::White;
+	setHitbox(0, 0, rad*2, rad*2);
 }
 
 void Planet::update(){
@@ -51,21 +83,41 @@ void Planet::update(){
 		if (target != nullptr){
 			spawnUnits();
 		}
-		// GROW POPULATION
-		if (population < rad*2){
-			if (grow.ring()){
-				population++;
-				grow.reset();
+		switch(type){
+			case TYPE::POPULATION:{
+				// GROW POPULATION
+				if (population < rad*2){
+					if (grow.ring()){
+						population++;
+						grow.reset();
+					}
+					grow.tick();
+				}
 			}
-			grow.tick();
+			break;
+			case TYPE::RESOURCE:{
+				// DRAIN RESOURCES
+				if (resource > 0 && population >= resource){
+					if (drain.ring()){
+						resource--;
+						drain.reset();
+					}
+					drain.tick();
+				}
+			}
+			break;
 		}
 	}
+	resText.setString(std::to_string(resource));
 	popText.setString(std::to_string(population));
 }
 void Planet::draw(){
 	circle.setPosition(x, y);
 	win::window.draw(circle);
 	win::window.draw(popText);
+	if (type==TYPE::RESOURCE){
+		win::window.draw(resText);
+	}
 }
 
 void Planet::spawnUnits(){
@@ -124,10 +176,15 @@ void Planet::setRadius(float r){
 	setHitbox(0, 0, r*2, r*2);
 	rad = r;
 	circle.setRadius(rad);
-	population = rad;
+	resource = rad;
+	if (type==TYPE::POPULATION){
+		population = rad;
+	}
 	int tPosX = static_cast<int>(x+rad);
 	int tPosY = static_cast<int>(y+rad);
 	popText.setPosition(tPosX, tPosY);
+	tPosY = static_cast<int>(y+(rad*2));
+	resText.setPosition(tPosX, tPosY);
 }
 
 bool Planet::intersects(float x2, float y2, float r2){

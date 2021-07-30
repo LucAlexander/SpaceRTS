@@ -28,14 +28,26 @@ private:
 	sf::CircleShape circle;
 	Faction* faction;
 	int population;
+	int resource;
 	Planet* target;
 	int thickness;
 	int selectThickness;
 	sf::Color selectedColor;
 	int vibranceCoef;
 	Alarm grow;
+	Alarm drain;
 	sf::Text popText;
+	sf::Text resText;
 	sf::Font popFont;
+	
+	enum TYPE{
+		POPULATION,
+		RESOURCE
+	};
+
+	TYPE type;
+	float textScale;
+	int popWeight;
 };
 
 #endif
