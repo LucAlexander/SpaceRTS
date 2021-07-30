@@ -27,8 +27,9 @@ Planet::Planet():
 {}
 
 void Planet::init(){
+	sf::Color neutralColor = sf::Color(104, 86, 66);
 	circle.setOutlineThickness(2);
-	circle.setOutlineColor(sf::Color(104, 86, 66));
+	circle.setOutlineColor(neutralColor);
 	circle.setTexture(txtab::load("planet.png"));
 	selectedColor = sf::Color::White;
 	setHitbox(0, 0, rad*2, rad*2);
@@ -36,7 +37,12 @@ void Planet::init(){
 	popFont.loadFromFile("./f/FSEX300.ttf");
 	popText.setFont(popFont);
 	popText.setFillColor(sf::Color::White);
-	popText.setPosition(x+rad, y+rad);
+	popText.setOutlineThickness(2);
+	popText.setOutlineColor(neutralColor);
+	popText.setScale(0.5, 0.5);
+	int tPosX = static_cast<int>(x+rad);
+	int tPosY = static_cast<int>(y+rad);
+	popText.setPosition(tPosX, tPosY);
 }
 
 void Planet::update(){
@@ -119,7 +125,9 @@ void Planet::setRadius(float r){
 	rad = r;
 	circle.setRadius(rad);
 	population = rad;
-	popText.setPosition(x+rad, y+rad);
+	int tPosX = static_cast<int>(x+rad);
+	int tPosY = static_cast<int>(y+rad);
+	popText.setPosition(tPosX, tPosY);
 }
 
 bool Planet::intersects(float x2, float y2, float r2){
@@ -170,6 +178,7 @@ void Planet::setFaction(Faction* f){
 	selectedColor.r += vibranceCoef;
 	selectedColor.g += vibranceCoef;
 	selectedColor.b += vibranceCoef;
+	popText.setOutlineColor(faction->getColor());
 }
 
 Faction* Planet::getFaction()const{
