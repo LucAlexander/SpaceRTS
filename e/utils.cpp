@@ -50,6 +50,17 @@ int utils::pointDirection(float x, float y, float xx, float yy){
 }
 
 bool utils::pointInRect(v2 p, Rect r){
+	if (r.start.x > r.end.x){
+		float temp = r.start.x;
+		r.start.x = r.end.x;
+		r.end.x = temp;
+	}
+	if (r.start.y > r.end.y){
+		float temp = r.start.y;
+		r.start.y = r.end.y;
+		r.end.y = temp;
+	}
+
 	return (p.x >= r.start.x && p.x <= r.end.x) && 
 		(p.y >= r.start.y && p.y <= r.end.y);
 
