@@ -12,11 +12,15 @@ public:
 	std::string getName()const;
 	sf::Color getColor()const;
 	int operator==(Faction a);
+	void gainResource();
 private:
 	std::string name;
 	sf::Color col;
 	bool isUniqueName(std::string n);
 	sf::Color generateColor();
+	int resource;
+	int tech;
+	int techCostIncrement;
 };
 
 #endif

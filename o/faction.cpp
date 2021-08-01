@@ -6,7 +6,10 @@
 Faction::Faction():
 	Entity(),
 	name(""),
-	col(255, 255, 255)
+	col(255, 255, 255),
+	resource(0),
+	tech(1),
+	techCostIncrement(10)
 {}
 
 void Faction::init(){
@@ -73,3 +76,6 @@ void Faction::setName(std::string n){
 	name = n;
 }
 
+void Faction::gainResource(){
+	resource++;
+}

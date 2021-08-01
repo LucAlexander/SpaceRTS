@@ -74,7 +74,7 @@ void Planet::init(){
 	circle.setOutlineThickness(2);
 	circle.setOutlineColor(neutralColor);
 	selectedColor = sf::Color::White;
-	setHitbox(0, 0, rad*2, rad*2);
+	setHitbox(-8, -8, 8+(rad*2), 8+(rad*2));
 }
 
 void Planet::update(){
@@ -100,6 +100,7 @@ void Planet::update(){
 				if (resource > 0 && population >= resource){
 					if (drain.ring()){
 						resource--;
+						faction->gainResource();
 						drain.reset();
 					}
 					drain.tick();
@@ -173,7 +174,7 @@ float Planet::getRadius(){
 }
 
 void Planet::setRadius(float r){
-	setHitbox(0, 0, r*2, r*2);
+	setHitbox(-8, -8, 8+(r*2), 8+(r*2));
 	rad = r;
 	circle.setRadius(rad);
 	resource = rad;

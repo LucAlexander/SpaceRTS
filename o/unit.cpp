@@ -91,6 +91,7 @@ int Unit::getShipCount()const{
 
 void Unit::setFaction(Faction* f){
 	faction = f;
+	sprite.setColor(faction->getColor());
 }
 
 Faction* Unit::getFaction(){

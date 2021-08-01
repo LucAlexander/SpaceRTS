@@ -4,6 +4,7 @@
 #include "../e/input.h"
 #include "../e/debug.h"
 #include "../e/win.h"
+#include "../e/button.h"
 
 #include <iostream>
 
@@ -24,6 +25,12 @@ void Player::init(){
 		std::cout << enth::get(Planet(), i)->getX() << "\t";
 		std::cout << enth::get(Planet(), i)->getY() << "\n";
 	}
+	Button* bu = enth::create(0, 0, Button());
+	bu->setAction([](){	
+		std::cout << "button click\n";
+	});
+	bu->setGuiPosition(8, 8);
+	bu->setTexture("planet.png");
 }
 
 void Player::update(){
