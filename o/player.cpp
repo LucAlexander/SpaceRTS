@@ -10,7 +10,10 @@
 Player::Player():
 	Entity(),
 	faction(nullptr),
-	selectRect(-1, -1, 0, 0)
+	selectRect(-1, -1, 0, 0),
+	zoomCoef(0.1),
+	cameraOriginX(0),
+	cameraOriginY(0)
 {}
 
 void Player::init(){
@@ -43,8 +46,36 @@ void Player::draw(){
 	}
 }
 
+void Player::cameraZoomUpdate(){
+	sf::View gCam = win::window.getView();
+	int dir = inp::mouseScroll()*-1;
+	gCam.zoom(1+(dir*zoomCoef));
+	win::window.setView(gCam);
+}
+
+void Player::cameraPositionUpdate(){
+	sf::View gCam = win::window.getView();
+	float mx, my;
+	mx = inp::guiMouseX();
+	my = inp::guiMouseY();
+	gCam.move(cameraOriginX-mx, cameraOriginY-my);
+	cameraOriginX = mx;
+	cameraOriginY = my;
+	win::window.setView(gCam);
+}
+
 void Player::clickLogic(){
-	if (inp::mousePressed(sf::Mouse::Button::Left)){
+	cameraZoomUpdate();
+	bool clickL = inp::mousePressed(sf::Mouse::Button::Left);
+	bool clickLH = inp::mouseHeld(sf::Mouse::Button::Left);
+	bool clickLR = inp::mouseReleased(sf::Mouse::Button::Left);
+	bool shift = inp::keyHeld(sf::Keyboard::Key::LShift);
+	if (clickL){
+		if (shift){
+			cameraOriginX = inp::guiMouseX();
+			cameraOriginY = inp::guiMouseY();
+			return;
+		}
 		Planet* instance = enth::pointCollides(inp::mouseX(), inp::mouseY(), Planet());
 		if (instance != nullptr){
 			planetClickLogic(instance);
@@ -54,14 +85,18 @@ void Player::clickLogic(){
 		selectRect.start.x=inp::mouseX();
 		selectRect.start.y=inp::mouseY();
 	}
-	if (inp::mouseHeld(sf::Mouse::Button::Left)){
+	if (clickLH){
 		if (selectRect.start.x != -1){
 			selectRect.end.x=inp::mouseX();
 			selectRect.end.y=inp::mouseY();
+			return;
+		}
+		if (shift){
+			cameraPositionUpdate();
 		}
 		return;
 	}
-	if (inp::mouseReleased(sf::Mouse::Button::Left)){
+	if (clickLR){
 		boundSelectPlanets();
 		selectRect.start.x=-1;
 		selectRect.start.y=-1;

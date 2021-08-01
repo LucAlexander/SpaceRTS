@@ -17,11 +17,16 @@ public:
 private:
 	Faction* faction;
 	utils::Rect selectRect;
+	float zoomCoef;
+	float cameraOriginX;
+	float cameraOriginY;
 	void clickLogic();
 	void boundSelectPlanets();
 	void planetClickLogic(Planet* instance);
 	void setTarget(Planet* instance);
 	void deselectPlanets();
+	void cameraPositionUpdate();
+	void cameraZoomUpdate();
 };
 
 #endif
