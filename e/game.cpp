@@ -60,6 +60,9 @@ void Game::draw(){
 			win::window.draw(hb);
 		}
 	}
+	for (auto vit : order){
+		vit->drawGui();
+	}
 }
 
 void Game::loop(){
