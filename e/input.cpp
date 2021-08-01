@@ -91,3 +91,7 @@ bool inp::mouseHeld(sf::Mouse::Button b){
 bool inp::mouseScroll(int d){
 	return utils::sign(d)==utils::sign(scrollDir);
 }
+
+int inp::mouseScroll(){
+	return utils::sign(scrollDir);
+}

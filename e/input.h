@@ -37,6 +37,7 @@ namespace inp{
 	bool mouseReleased(sf::Mouse::Button);
 	bool mouseHeld(sf::Mouse::Button);
 	bool mouseScroll(int delta);
+	int mouseScroll();
 }
 
 #endif

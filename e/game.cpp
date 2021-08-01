@@ -4,8 +4,6 @@
 #include "input.h"
 #include "debug.h"
 
-#include <iostream>
-
 Game::Game():
 	Game("demo")
 {}
@@ -24,26 +22,6 @@ void Game::setInitCode(std::function<void()> code){
 }
 
 void Game::update(){
-	sf::View gCam = win::window.getView();
-	if (inp::keyHeld(sf::Keyboard::E)){
-		gCam.zoom(0.99);
-	}
-	else if (inp::keyHeld(sf::Keyboard::Q)){
-		gCam.zoom(1.01);
-	}
-	if (inp::keyHeld(sf::Keyboard::W)){
-		gCam.move(0, -5);
-	}
-	if (inp::keyHeld(sf::Keyboard::A)){
-		gCam.move(-5, 0);
-	}
-	if (inp::keyHeld(sf::Keyboard::S)){
-		gCam.move(0, 5);
-	}
-	if (inp::keyHeld(sf::Keyboard::D)){
-		gCam.move(5, 0);
-	}
-	win::window.setView(gCam);
 	for (auto mit : enth::entityList){
 		for (auto vit : mit.second){
 			vit->update();
