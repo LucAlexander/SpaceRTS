@@ -7,19 +7,12 @@
 Button::Button():
 	Entity(),
 	actionCode([](){}),
-	show(true),
-	guiX(0),
-	guiY(0)
+	show(true)
 {}
-
-void Button::init(){
-	guiX = x;
-	guiY = y;
-}
 
 void Button::update(){
 	if (inp::mousePressed(sf::Mouse::Button::Left)){
-		if (enth::pointCollides(inp::mouseX(), inp::mouseY(), this)){
+		if (utils::pointInRect(utils::v2(inp::guiMouseX(), inp::guiMouseY()), getGlobalHitbox())){
 			activate();
 		}
 	}
@@ -29,9 +22,6 @@ void Button::draw(){}
 
 void Button::drawGui(){
 	if (show){
-		sf::Vector2f frame = win::window.mapPixelToCoords(sf::Vector2i(guiX, guiY));
-		x = frame.x;
-		y = frame.y;
 		sprite.setPosition(x, y);
 		win::window.draw(sprite);
 	}
@@ -47,9 +37,4 @@ void Button::setAction(std::function<void()> code){
 
 void Button::setShow(bool s){
 	show = s;
-}
-
-void Button::setGuiPosition(float xx, float yy){
-	guiX = xx;
-	guiY = yy;
 }
