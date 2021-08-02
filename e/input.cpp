@@ -21,19 +21,27 @@ void inp::newFrame(){
 }
 
 float inp::mouseX(){
-	return win::window.mapPixelToCoords(sf::Vector2i(guiMouseX(), guiMouseY())).x;
+	return win::window.mapPixelToCoords(sf::Mouse::getPosition(win::window)).x;
 }
 
 float inp::mouseY(){
-	return win::window.mapPixelToCoords(sf::Vector2i(guiMouseX(), guiMouseY())).y;
+	return win::window.mapPixelToCoords(sf::Mouse::getPosition(win::window)).y;
 }
 
 float inp::guiMouseX(){
-	return sf::Mouse::getPosition(win::window).x;
+	sf::View temp = win::window.getView();
+	win::window.setView(win::gui);
+	sf::Vector2f mp = win::window.mapPixelToCoords(sf::Mouse::getPosition(win::window));
+	win::window.setView(temp);
+	return mp.x;
 }
 
 float inp::guiMouseY(){
-	return sf::Mouse::getPosition(win::window).y;
+	sf::View temp = win::window.getView();
+	win::window.setView(win::gui);
+	sf::Vector2f mp = win::window.mapPixelToCoords(sf::Mouse::getPosition(win::window));
+	win::window.setView(temp);
+	return mp.y;
 }
 
 void inp::keyDownEvent(sf::Keyboard::Key k){

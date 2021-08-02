@@ -60,9 +60,12 @@ void Game::draw(){
 			win::window.draw(hb);
 		}
 	}
+	sf::View gameView = win::window.getView();
+	win::window.setView(win::gui);
 	for (auto vit : order){
 		vit->drawGui();
 	}
+	win::window.setView(gameView);
 }
 
 void Game::loop(){

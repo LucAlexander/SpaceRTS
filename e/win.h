@@ -7,6 +7,7 @@
 namespace win{
 	extern sf::RenderWindow window;
 	extern sf::View view;
+	extern sf::View gui;
 	const int width = 1920;
 	const int height = 1080;
 	const int vwidth = 512;
