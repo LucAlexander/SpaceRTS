@@ -25,11 +25,10 @@ void Player::init(){
 		std::cout << enth::get(Planet(), i)->getX() << "\t";
 		std::cout << enth::get(Planet(), i)->getY() << "\n";
 	}
-	Button* bu = enth::create(0, 0, Button());
+	Button* bu = enth::create(64, 64, Button());
 	bu->setAction([](){	
 		std::cout << "button click\n";
 	});
-	bu->setGuiPosition(8, 8);
 	bu->setTexture("planet.png");
 }
 
