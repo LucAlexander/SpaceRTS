@@ -11,9 +11,11 @@ Button::Button():
 {}
 
 void Button::update(){
-	if (inp::mousePressed(sf::Mouse::Button::Left)){
-		if (utils::pointInRect(utils::v2(inp::guiMouseX(), inp::guiMouseY()), getGlobalHitbox())){
-			activate();
+	if (show){
+		if (inp::mousePressed(sf::Mouse::Button::Left)){
+			if (utils::pointInRect(utils::v2(inp::guiMouseX(), inp::guiMouseY()), getGlobalHitbox())){
+				activate();
+			}
 		}
 	}
 }
