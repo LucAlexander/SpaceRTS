@@ -3,6 +3,7 @@
 
 #include "../e/entity.h"
 #include "../e/utils.h"
+#include "../e/button.h"
 #include "faction.h"
 #include "planet.h"
 
@@ -12,14 +13,20 @@ public:
 	void init();
 	void update();
 	void draw();
+	void drawGui();
 	Faction* getFaction()const;
 	void setFactionName(std::string name);
+	void toggleTab();
 private:
 	Faction* faction;
 	utils::Rect selectRect;
 	float zoomCoef;
 	float cameraOriginX;
 	float cameraOriginY;
+	Button* menuTab;
+	sf::RectangleShape menu;
+	sf::RectangleShape tab;
+	bool tabOpen;
 	void clickLogic();
 	void boundSelectPlanets();
 	void planetClickLogic(Planet* instance);

@@ -4,7 +4,6 @@
 #include "../e/input.h"
 #include "../e/debug.h"
 #include "../e/win.h"
-#include "../e/button.h"
 
 #include <iostream>
 
@@ -14,7 +13,11 @@ Player::Player():
 	selectRect(-1, -1, 0, 0),
 	zoomCoef(0.1),
 	cameraOriginX(0),
-	cameraOriginY(0)
+	cameraOriginY(0),
+	menuTab(nullptr),
+	tabOpen(false),
+	menu(sf::Vector2f(64, 192)),
+	tab(sf::Vector2f(15, 33))
 {}
 
 void Player::init(){
@@ -25,11 +28,21 @@ void Player::init(){
 		std::cout << enth::get(Planet(), i)->getX() << "\t";
 		std::cout << enth::get(Planet(), i)->getY() << "\n";
 	}
-	Button* bu = enth::create(64, 64, Button());
-	bu->setAction([](){	
-		std::cout << "button click\n";
+	// GUI MENU
+	menuTab = enth::create(0, 16, Button());
+	menuTab->setAction([this](){
+		this->toggleTab();
 	});
-	bu->setTexture("planet.png");
+	menuTab->setDepth(depth+1);
+	menuTab->setTexture("menuTab.png");
+	menu.setPosition(0, 16);
+	menu.setFillColor(sf::Color(32, 32, 32));
+	menu.setOutlineColor(faction->getColor());
+	menu.setOutlineThickness(2);
+	tab.setPosition(2, 16);
+	tab.setOutlineThickness(2);
+	tab.setOutlineColor(faction->getColor());
+	tab.setFillColor(faction->getColor());
 }
 
 void Player::update(){
@@ -50,6 +63,24 @@ void Player::draw(){
 		drawBound.setFillColor(sf::Color(0, 0, 0, 0));
 		win::window.draw(drawBound);
 	}
+}
+
+void Player::drawGui(){
+	if(tabOpen){
+		win::window.draw(menu);
+	}
+	win::window.draw(tab);
+}
+
+void Player::toggleTab(){
+	tabOpen = !tabOpen;
+	if (tabOpen){
+		menuTab->setX(64);
+		tab.setPosition(66, 16);
+		return;
+	}
+	menuTab->setX(0);
+	tab.setPosition(2, 16);
 }
 
 void Player::cameraZoomUpdate(){
