@@ -5,6 +5,7 @@
 #include "../e/entityHandler.h"
 #include "../e/rnd.h"
 #include "../e/textureTable.h"
+#include "../e/settings.h"
 
 #include <algorithm>
 #include <string>
@@ -47,7 +48,7 @@ void Planet::init(){
 	type = rnd::roll(popWeight) ? TYPE::RESOURCE : TYPE::POPULATION;
 	switch(type){
 		case TYPE::RESOURCE:{
-			drain.set(utils::TPS*2);
+			drain.set(settings::TPS*2);
 			neutralColor = sf::Color(104, 104, 104);
 			circle.setTexture(txtab::load("resourcePlanet.png"));
 			resText.setFont(popFont);
@@ -63,7 +64,7 @@ void Planet::init(){
 		case TYPE::POPULATION:{
 			neutralColor = sf::Color(104, 86, 12);
 			circle.setTexture(txtab::load("planet.png"));
-			grow.set(utils::TPS);
+			grow.set(settings::TPS);
 			resource = 0;
 		}
 		break;
