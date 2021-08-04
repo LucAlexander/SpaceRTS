@@ -132,7 +132,7 @@ void Planet::spawnUnits(){
 	int placeDist = rad;
 	int placeOffset = 16;
 	int shipLoad = population - (population / 2);
-	int shipPartitionSize = 1;
+	int shipPartitionSize = 5;
 	population /= 2;
 	int tries = 0;
 	while (shipLoad > 0){

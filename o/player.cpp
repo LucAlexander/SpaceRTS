@@ -24,7 +24,7 @@ Player::Player():
 
 void Player::init(){
 	faction = enth::create(0, 0, Faction());
-	for (int i = 0;i<4;++i){
+	for (int i = 0;i<16;++i){
 		enth::get(Planet(), i)->setFaction(faction);
 	}
 	// GUI MENU
@@ -116,6 +116,7 @@ void Player::clickLogic(){
 	bool clickLR = inp::mouseReleased(sf::Mouse::Button::Left);
 	bool shift = inp::keyHeld(sf::Keyboard::Key::LShift);
 	if (clickL){
+		std::cout << enth::instanceCount() << "\n";
 		if (shift){
 			cameraOriginX = inp::guiMouseX();
 			cameraOriginY = inp::guiMouseY();
