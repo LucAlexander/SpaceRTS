@@ -26,6 +26,8 @@ private:
 	Button* menuTab;
 	sf::RectangleShape menu;
 	sf::RectangleShape tab;
+	sf::Text factionName;
+	sf::Font font;
 	bool tabOpen;
 	void clickLogic();
 	void boundSelectPlanets();

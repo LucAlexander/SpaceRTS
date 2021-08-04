@@ -17,32 +17,39 @@ Player::Player():
 	menuTab(nullptr),
 	tabOpen(false),
 	menu(sf::Vector2f(64, 192)),
-	tab(sf::Vector2f(15, 33))
+	tab(sf::Vector2f(15, 33)),
+	factionName(),
+	font()
 {}
 
 void Player::init(){
 	faction = enth::create(0, 0, Faction());
-	std::cout << faction->getName() << "\n";
 	for (int i = 0;i<4;++i){
 		enth::get(Planet(), i)->setFaction(faction);
-		std::cout << enth::get(Planet(), i)->getX() << "\t";
-		std::cout << enth::get(Planet(), i)->getY() << "\n";
 	}
 	// GUI MENU
-	menuTab = enth::create(0, 16, Button());
+	menuTab = enth::create(0, 18, Button());
 	menuTab->setAction([this](){
 		this->toggleTab();
 	});
 	menuTab->setDepth(depth+1);
 	menuTab->setTexture("menuTab.png");
-	menu.setPosition(0, 16);
+	menu.setPosition(0, 18);
 	menu.setFillColor(sf::Color(32, 32, 32));
 	menu.setOutlineColor(faction->getColor());
 	menu.setOutlineThickness(2);
-	tab.setPosition(2, 16);
+	tab.setPosition(2, 18);
 	tab.setOutlineThickness(2);
 	tab.setOutlineColor(faction->getColor());
 	tab.setFillColor(faction->getColor());
+	font.loadFromFile("./f/FSEX300.ttf");
+	factionName.setFont(font);
+	factionName.setString(faction->getName());
+	factionName.setPosition(2, -2);
+	factionName.setFillColor(sf::Color(32, 32, 32));
+	factionName.setOutlineThickness(2);
+	factionName.setOutlineColor(faction->getColor());
+	factionName.setScale(0.5, 0.5);
 }
 
 void Player::update(){
@@ -70,17 +77,18 @@ void Player::drawGui(){
 		win::window.draw(menu);
 	}
 	win::window.draw(tab);
+	win::window.draw(factionName);
 }
 
 void Player::toggleTab(){
 	tabOpen = !tabOpen;
 	if (tabOpen){
 		menuTab->setX(64);
-		tab.setPosition(66, 16);
+		tab.setPosition(66, 18);
 		return;
 	}
 	menuTab->setX(0);
-	tab.setPosition(2, 16);
+	tab.setPosition(2, 18);
 }
 
 void Player::cameraZoomUpdate(){
