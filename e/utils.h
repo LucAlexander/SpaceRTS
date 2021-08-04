@@ -5,7 +5,6 @@
 
 namespace utils{
 	const float PI = 3.141592;
-	const int TPS = 60;
 	
 	struct v2{
 		v2();

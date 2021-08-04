@@ -3,6 +3,7 @@
 #include "entityHandler.h"
 #include "input.h"
 #include "debug.h"
+#include "settings.h"
 
 Game::Game():
 	Game("demo")
@@ -11,7 +12,7 @@ Game::Game():
 Game::Game(const char* title):
 	clock(),
 	elapsedTime(),
-	frameTime(1000/utils::TPS),
+	frameTime(1000/settings::TPS),
 	initCode([](){})
 {
 	win::init(title);
@@ -72,7 +73,6 @@ void Game::loop(){
 	// RUN INITIALIZATION CODE
 	initCode();
 	// SET UP LOOP PARAMS
-	int frameTime = 1000/utils::TPS;
 	clock.restart();
 	// MAIN LOOP
 	while(win::window.isOpen()){
