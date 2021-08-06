@@ -44,7 +44,7 @@ void Player::init(){
 		this->faction->tryUpgrade();
 		this->updateMenuText();
 	});
-	upgrade->setTexture("planet.png");
+	upgrade->setTexture("upgrade.png");
 	upgrade->setDepth(depth+1);
 	upgrade->setShow(tabOpen);
 	// TEXT
