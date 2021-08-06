@@ -15,10 +15,14 @@ Player::Player():
 	cameraOriginX(0),
 	cameraOriginY(0),
 	menuTab(nullptr),
+	upgrade(nullptr),
 	tabOpen(false),
 	menu(sf::Vector2f(64, 192)),
 	tab(sf::Vector2f(15, 33)),
 	factionName(),
+	techLevel(),
+	resourceLevel(),
+	nextCost(),
 	font()
 {}
 
@@ -27,21 +31,23 @@ void Player::init(){
 	for (int i = 0;i<16;++i){
 		enth::get(Planet(), i)->setFaction(faction);
 	}
-	// GUI MENU
+	// GUI
+	// BUTTONS
 	menuTab = enth::create(0, 18, Button());
 	menuTab->setAction([this](){
 		this->toggleTab();
 	});
 	menuTab->setDepth(depth+1);
 	menuTab->setTexture("menuTab.png");
-	menu.setPosition(0, 18);
-	menu.setFillColor(sf::Color(32, 32, 32));
-	menu.setOutlineColor(faction->getColor());
-	menu.setOutlineThickness(2);
-	tab.setPosition(2, 18);
-	tab.setOutlineThickness(2);
-	tab.setOutlineColor(faction->getColor());
-	tab.setFillColor(faction->getColor());
+	upgrade = enth::create(6, 80, Button());
+	upgrade->setAction([this](){
+		this->faction->tryUpgrade();
+		this->updateMenuText();
+	});
+	upgrade->setTexture("planet.png");
+	upgrade->setDepth(depth+1);
+	upgrade->setShow(tabOpen);
+	// TEXT
 	font.loadFromFile("./f/FSEX300.ttf");
 	factionName.setFont(font);
 	factionName.setString(faction->getName());
@@ -50,11 +56,42 @@ void Player::init(){
 	factionName.setOutlineThickness(2);
 	factionName.setOutlineColor(faction->getColor());
 	factionName.setScale(0.5, 0.5);
+	techLevel.setFont(font);
+	techLevel.setString(std::to_string(faction->getTech()));
+	techLevel.setPosition(6, 48);
+	techLevel.setFillColor(sf::Color(32, 32, 32));
+	techLevel.setOutlineThickness(2);
+	techLevel.setOutlineColor(faction->getColor());
+	techLevel.setScale(0.25, 0.25);
+	resourceLevel.setFont(font);
+	resourceLevel.setString(std::to_string(faction->getResource()));
+	resourceLevel.setPosition(6, 32);
+	resourceLevel.setFillColor(sf::Color(32, 32, 32));
+	resourceLevel.setOutlineThickness(2);
+	resourceLevel.setOutlineColor(faction->getColor());
+	resourceLevel.setScale(0.25, 0.25);
+	nextCost.setFont(font);
+	nextCost.setString(std::to_string(faction->getCost()));
+	nextCost.setPosition(6, 64);
+	nextCost.setFillColor(sf::Color(32, 32, 32));
+	nextCost.setOutlineThickness(2);
+	nextCost.setOutlineColor(faction->getColor());
+	nextCost.setScale(0.25, 0.25);
+	// ELEMENTS
+	menu.setPosition(0, 18);
+	menu.setFillColor(sf::Color(32, 32, 32));
+	menu.setOutlineColor(faction->getColor());
+	menu.setOutlineThickness(2);
+	tab.setPosition(2, 18);
+	tab.setOutlineThickness(2);
+	tab.setOutlineColor(faction->getColor());
+	tab.setFillColor(faction->getColor());
 }
 
 void Player::update(){
 	clickLogic();
 	dbug::showHitboxes(false);
+	resourceLevel.setString(std::to_string(faction->getResource()));
 	if(inp::keyHeld(sf::Keyboard::Key::Tab)){
 		dbug::showHitboxes(true);
 	}
@@ -75,6 +112,9 @@ void Player::draw(){
 void Player::drawGui(){
 	if(tabOpen){
 		win::window.draw(menu);
+		win::window.draw(techLevel);
+		win::window.draw(resourceLevel);
+		win::window.draw(nextCost);
 	}
 	win::window.draw(tab);
 	win::window.draw(factionName);
@@ -82,6 +122,7 @@ void Player::drawGui(){
 
 void Player::toggleTab(){
 	tabOpen = !tabOpen;
+	upgrade->setShow(tabOpen);
 	if (tabOpen){
 		menuTab->setX(64);
 		tab.setPosition(66, 18);
@@ -116,7 +157,6 @@ void Player::clickLogic(){
 	bool clickLR = inp::mouseReleased(sf::Mouse::Button::Left);
 	bool shift = inp::keyHeld(sf::Keyboard::Key::LShift);
 	if (clickL){
-		std::cout << enth::instanceCount() << "\n";
 		if (shift){
 			cameraOriginX = inp::guiMouseX();
 			cameraOriginY = inp::guiMouseY();
@@ -199,7 +239,7 @@ void Player::setTarget(Planet* instance){
 			instance->toggleSelect();
 		}
 	}
-	for (int i =0;i<planetCount;++i){
+	for (int i = 0;i<planetCount;++i){
 		Planet* pl = enth::get(Planet(), i);
 		if (pl != instance){
 			if (pl->getFaction() == faction && pl->getSelected()){
@@ -217,4 +257,9 @@ Faction* Player::getFaction()const{
 
 void Player::setFactionName(std::string name){
 	faction->setName(name);
+}
+
+void Player::updateMenuText(){
+	techLevel.setString(std::to_string(faction->getTech()));
+	nextCost.setString(std::to_string(faction->getCost()));
 }

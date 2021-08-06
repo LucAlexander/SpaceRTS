@@ -9,14 +9,16 @@ Faction::Faction():
 	col(255, 255, 255),
 	resource(0),
 	tech(1),
-	techCostIncrement(10)
+	techCostIncrement(10),
+	techCostIncrementChange(5),
+	techCost(25)
 {}
 
 void Faction::init(){
 	col = generateColor();
 	if (enth::exists(NationGenerator())){
 		do{
-			name = enth::get(NationGenerator())->generate("chinese");
+			name = enth::get(NationGenerator())->generate("portuguese");
 		}
 		while(!isUniqueName(name));
 	}
@@ -79,3 +81,25 @@ void Faction::setName(std::string n){
 void Faction::gainResource(){
 	resource++;
 }
+
+void Faction::tryUpgrade(){
+	 if(resource >=techCost){
+	 	resource -= techCost;
+		techCost += techCostIncrement;
+		techCostIncrement += techCostIncrementChange;
+		tech++;
+	 }
+}
+
+int Faction::getTech()const{
+	return tech;
+}
+
+int Faction::getResource()const{
+	return resource;
+}
+
+int Faction::getCost()const{
+	return techCost;
+}
+

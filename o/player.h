@@ -24,9 +24,13 @@ private:
 	float cameraOriginX;
 	float cameraOriginY;
 	Button* menuTab;
+	Button* upgrade;
 	sf::RectangleShape menu;
 	sf::RectangleShape tab;
 	sf::Text factionName;
+	sf::Text techLevel;
+	sf::Text resourceLevel;
+	sf::Text nextCost;
 	sf::Font font;
 	bool tabOpen;
 	void clickLogic();
@@ -36,6 +40,7 @@ private:
 	void deselectPlanets();
 	void cameraPositionUpdate();
 	void cameraZoomUpdate();
+	void updateMenuText();
 };
 
 #endif

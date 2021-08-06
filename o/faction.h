@@ -13,6 +13,10 @@ public:
 	sf::Color getColor()const;
 	int operator==(Faction a);
 	void gainResource();
+	void tryUpgrade();
+	int getTech()const;
+	int getResource()const;
+	int getCost()const;
 private:
 	std::string name;
 	sf::Color col;
@@ -21,6 +25,8 @@ private:
 	int resource;
 	int tech;
 	int techCostIncrement;
+	int techCostIncrementChange;
+	int techCost;
 };
 
 #endif
