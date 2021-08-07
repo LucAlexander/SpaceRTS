@@ -27,11 +27,15 @@ private:
 	Button* upgrade;
 	sf::RectangleShape menu;
 	sf::RectangleShape tab;
+	sf::RectangleShape upgradeOutline;
 	sf::Text factionName;
 	sf::Text techLevel;
 	sf::Text resourceLevel;
 	sf::Text nextCost;
 	sf::Font font;
+	std::string techString;
+	std::string resourceString;
+	std::string costString;
 	bool tabOpen;
 	void clickLogic();
 	void boundSelectPlanets();

@@ -16,14 +16,18 @@ Player::Player():
 	cameraOriginY(0),
 	menuTab(nullptr),
 	upgrade(nullptr),
-	tabOpen(false),
 	menu(sf::Vector2f(64, 192)),
 	tab(sf::Vector2f(15, 33)),
+	upgradeOutline(sf::Vector2f(34, 18)),
 	factionName(),
 	techLevel(),
 	resourceLevel(),
 	nextCost(),
-	font()
+	font(),
+	techString("TECH "),
+	resourceString("RESOURCES: "),
+	costString("COST: "),
+	tabOpen(false)
 {}
 
 void Player::init(){
@@ -39,7 +43,7 @@ void Player::init(){
 	});
 	menuTab->setDepth(depth+1);
 	menuTab->setTexture("menuTab.png");
-	upgrade = enth::create(6, 80, Button());
+	upgrade = enth::create(6, 62, Button());
 	upgrade->setAction([this](){
 		this->faction->tryUpgrade();
 		this->updateMenuText();
@@ -57,23 +61,23 @@ void Player::init(){
 	factionName.setOutlineColor(faction->getColor());
 	factionName.setScale(0.5, 0.5);
 	techLevel.setFont(font);
-	techLevel.setString(std::to_string(faction->getTech()));
+	techLevel.setString(techString + std::to_string(faction->getTech()));
 	techLevel.setPosition(6, 48);
-	techLevel.setFillColor(sf::Color(32, 32, 32));
+	techLevel.setFillColor(sf::Color(16, 16, 16));
 	techLevel.setOutlineThickness(2);
 	techLevel.setOutlineColor(faction->getColor());
 	techLevel.setScale(0.25, 0.25);
 	resourceLevel.setFont(font);
-	resourceLevel.setString(std::to_string(faction->getResource()));
-	resourceLevel.setPosition(6, 32);
-	resourceLevel.setFillColor(sf::Color(32, 32, 32));
+	resourceLevel.setString(resourceString + std::to_string(faction->getResource()));
+	resourceLevel.setPosition(6, 96);
+	resourceLevel.setFillColor(sf::Color(16, 16, 16));
 	resourceLevel.setOutlineThickness(2);
 	resourceLevel.setOutlineColor(faction->getColor());
 	resourceLevel.setScale(0.25, 0.25);
 	nextCost.setFont(font);
-	nextCost.setString(std::to_string(faction->getCost()));
-	nextCost.setPosition(6, 64);
-	nextCost.setFillColor(sf::Color(32, 32, 32));
+	nextCost.setString(costString + std::to_string(faction->getCost()));
+	nextCost.setPosition(6, 80);
+	nextCost.setFillColor(sf::Color(16, 16, 16));
 	nextCost.setOutlineThickness(2);
 	nextCost.setOutlineColor(faction->getColor());
 	nextCost.setScale(0.25, 0.25);
@@ -86,12 +90,14 @@ void Player::init(){
 	tab.setOutlineThickness(2);
 	tab.setOutlineColor(faction->getColor());
 	tab.setFillColor(faction->getColor());
+	upgradeOutline.setPosition(5, 61);
+	upgradeOutline.setFillColor(faction->getColor());
 }
 
 void Player::update(){
 	clickLogic();
 	dbug::showHitboxes(false);
-	resourceLevel.setString(std::to_string(faction->getResource()));
+	resourceLevel.setString(resourceString + std::to_string(faction->getResource()));
 	if(inp::keyHeld(sf::Keyboard::Key::Tab)){
 		dbug::showHitboxes(true);
 	}
@@ -115,6 +121,7 @@ void Player::drawGui(){
 		win::window.draw(techLevel);
 		win::window.draw(resourceLevel);
 		win::window.draw(nextCost);
+		win::window.draw(upgradeOutline);
 	}
 	win::window.draw(tab);
 	win::window.draw(factionName);
@@ -260,6 +267,6 @@ void Player::setFactionName(std::string name){
 }
 
 void Player::updateMenuText(){
-	techLevel.setString(std::to_string(faction->getTech()));
-	nextCost.setString(std::to_string(faction->getCost()));
+	techLevel.setString(techString + std::to_string(faction->getTech()));
+	nextCost.setString(costString + std::to_string(faction->getCost()));
 }
