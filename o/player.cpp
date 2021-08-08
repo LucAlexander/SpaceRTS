@@ -16,18 +16,26 @@ Player::Player():
 	cameraOriginY(0),
 	menuTab(nullptr),
 	upgrade(nullptr),
+	growthRate(nullptr),
+	growthCap(nullptr),
+	drainSpeed(nullptr),
 	menu(sf::Vector2f(64, 192)),
 	tab(sf::Vector2f(15, 33)),
 	upgradeOutline(sf::Vector2f(34, 18)),
+	chooseUpgrade(sf::Vector2f(160, 64)),
 	factionName(),
 	techLevel(),
 	resourceLevel(),
 	nextCost(),
+	growthUpLabel(),
+	growthCapUpLabel(),
+	drainUpLabel(),
 	font(),
 	techString("TECH "),
 	resourceString("RESOURCES: "),
 	costString("COST: "),
-	tabOpen(false)
+	tabOpen(false),
+	upgradeMenuQueue(0)
 {}
 
 void Player::init(){
@@ -36,7 +44,12 @@ void Player::init(){
 		enth::get(Planet(), i)->setFaction(faction);
 	}
 	// GUI
-	// BUTTONS
+	setupButtons();
+	setupText();
+	setupElements();
+}
+
+void Player::setupButtons(){
 	menuTab = enth::create(0, 18, Button());
 	menuTab->setAction([this](){
 		this->toggleTab();
@@ -45,13 +58,42 @@ void Player::init(){
 	menuTab->setTexture("menuTab.png");
 	upgrade = enth::create(6, 62, Button());
 	upgrade->setAction([this](){
+		if (this->faction->getResource() > this->faction->getCost()){
+			this->upgradeMenuQueue ++;
+		}
 		this->faction->tryUpgrade();
 		this->updateMenuText();
 	});
 	upgrade->setTexture("upgrade.png");
 	upgrade->setDepth(depth+1);
 	upgrade->setShow(tabOpen);
-	// TEXT
+	growthRate = enth::create(108, 96, Button());
+	growthRate->setTexture("growthRate.png");
+	growthRate->setAction([this](){
+		this->upgradeMenuQueue--;
+		this->faction->upgradeGrowthRate();
+	});
+	growthRate->setDepth(depth+1);
+	growthRate->setShow(false);
+	growthCap = enth::create(152, 96, Button());
+	growthCap->setTexture("growthCap.png");
+	growthCap->setAction([this](){
+		this->upgradeMenuQueue--;
+		this->faction->upgradeGrowthCap();
+	});
+	growthCap->setDepth(depth+1);
+	growthCap->setShow(false);
+	drainSpeed = enth::create(196, 96, Button());
+	drainSpeed->setTexture("drainSpeed.png");
+	drainSpeed->setAction([this](){
+		this->upgradeMenuQueue--;
+		this->faction->upgradeDrainRate();
+	});
+	drainSpeed->setDepth(depth+1);
+	drainSpeed->setShow(false);
+}
+
+void Player::setupText(){
 	font.loadFromFile("./f/FSEX300.ttf");
 	factionName.setFont(font);
 	factionName.setString(faction->getName());
@@ -81,7 +123,30 @@ void Player::init(){
 	nextCost.setOutlineThickness(2);
 	nextCost.setOutlineColor(faction->getColor());
 	nextCost.setScale(0.25, 0.25);
-	// ELEMENTS
+	growthUpLabel.setFont(font);
+	growthUpLabel.setString("Increase\nGrowth\nRate");
+	growthUpLabel.setPosition(100, 112);
+	growthUpLabel.setFillColor(sf::Color(16, 16, 16));
+	growthUpLabel.setOutlineThickness(2);
+	growthUpLabel.setOutlineColor(faction->getColor());
+	growthUpLabel.setScale(0.25, 0.25);
+	growthCapUpLabel.setFont(font);
+	growthCapUpLabel.setString("Increase\nGrowth\nCap");
+	growthCapUpLabel.setPosition(144, 112);
+	growthCapUpLabel.setFillColor(sf::Color(16, 16, 16));
+	growthCapUpLabel.setOutlineThickness(2);
+	growthCapUpLabel.setOutlineColor(faction->getColor());
+	growthCapUpLabel.setScale(0.25, 0.25);
+	drainUpLabel.setFont(font);
+	drainUpLabel.setString("Increase\nResource\nDrain Rate");
+	drainUpLabel.setPosition(188, 112);
+	drainUpLabel.setFillColor(sf::Color(16, 16, 16));
+	drainUpLabel.setOutlineThickness(2);
+	drainUpLabel.setOutlineColor(faction->getColor());
+	drainUpLabel.setScale(0.25, 0.25);
+}
+
+void Player::setupElements(){
 	menu.setPosition(0, 18);
 	menu.setFillColor(sf::Color(32, 32, 32));
 	menu.setOutlineColor(faction->getColor());
@@ -92,12 +157,19 @@ void Player::init(){
 	tab.setFillColor(faction->getColor());
 	upgradeOutline.setPosition(5, 61);
 	upgradeOutline.setFillColor(faction->getColor());
+	chooseUpgrade.setPosition(80, 80);
+	chooseUpgrade.setFillColor(sf::Color(32, 32, 32));
+	chooseUpgrade.setOutlineColor(faction->getColor());
+	chooseUpgrade.setOutlineThickness(2);
 }
 
 void Player::update(){
 	clickLogic();
-	dbug::showHitboxes(false);
 	resourceLevel.setString(resourceString + std::to_string(faction->getResource()));
+	growthRate->setShow(upgradeMenuQueue>0&&tabOpen);
+	growthCap->setShow(upgradeMenuQueue>0&&tabOpen);
+	drainSpeed->setShow(upgradeMenuQueue>0&&tabOpen);
+	dbug::showHitboxes(false);
 	if(inp::keyHeld(sf::Keyboard::Key::Tab)){
 		dbug::showHitboxes(true);
 	}
@@ -122,6 +194,12 @@ void Player::drawGui(){
 		win::window.draw(resourceLevel);
 		win::window.draw(nextCost);
 		win::window.draw(upgradeOutline);
+		if (upgradeMenuQueue){
+			win::window.draw(chooseUpgrade);
+			win::window.draw(growthUpLabel);
+			win::window.draw(growthCapUpLabel);
+			win::window.draw(drainUpLabel);
+		}
 	}
 	win::window.draw(tab);
 	win::window.draw(factionName);

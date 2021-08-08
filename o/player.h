@@ -25,18 +25,26 @@ private:
 	float cameraOriginY;
 	Button* menuTab;
 	Button* upgrade;
+	Button* growthRate;
+	Button* growthCap;
+	Button* drainSpeed;
 	sf::RectangleShape menu;
 	sf::RectangleShape tab;
 	sf::RectangleShape upgradeOutline;
+	sf::RectangleShape chooseUpgrade;
 	sf::Text factionName;
 	sf::Text techLevel;
 	sf::Text resourceLevel;
 	sf::Text nextCost;
+	sf::Text growthUpLabel;
+	sf::Text growthCapUpLabel;
+	sf::Text drainUpLabel;
 	sf::Font font;
 	std::string techString;
 	std::string resourceString;
 	std::string costString;
 	bool tabOpen;
+	int upgradeMenuQueue;
 	void clickLogic();
 	void boundSelectPlanets();
 	void planetClickLogic(Planet* instance);
@@ -45,6 +53,9 @@ private:
 	void cameraPositionUpdate();
 	void cameraZoomUpdate();
 	void updateMenuText();
+	void setupButtons();
+	void setupText();
+	void setupElements();
 };
 
 #endif

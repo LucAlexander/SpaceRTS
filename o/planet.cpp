@@ -87,9 +87,10 @@ void Planet::update(){
 		switch(type){
 			case TYPE::POPULATION:{
 				// GROW POPULATION
-				if (population < rad*2){
+				if (population < (rad*2*faction->getGrowthCap())){
 					if (grow.ring()){
 						population++;
+						grow.set(settings::TPS/faction->getGrowthRate());
 						grow.reset();
 					}
 					grow.tick();
@@ -102,6 +103,7 @@ void Planet::update(){
 					if (drain.ring()){
 						resource--;
 						faction->gainResource();
+						drain.set(settings::TPS/faction->getDrainRate());
 						drain.reset();
 					}
 					drain.tick();

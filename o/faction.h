@@ -17,6 +17,12 @@ public:
 	int getTech()const;
 	int getResource()const;
 	int getCost()const;
+	int getGrowthRate()const;
+	int getDrainRate()const;
+	float getGrowthCap()const;	
+	void upgradeGrowthRate();
+	void upgradeGrowthCap();
+	void upgradeDrainRate();
 private:
 	std::string name;
 	sf::Color col;
@@ -27,6 +33,9 @@ private:
 	int techCostIncrement;
 	int techCostIncrementChange;
 	int techCost;
+	int growthRate;
+	int drainRate;
+	float growthCap;
 };
 
 #endif

@@ -11,7 +11,10 @@ Faction::Faction():
 	tech(1),
 	techCostIncrement(10),
 	techCostIncrementChange(5),
-	techCost(25)
+	techCost(25),
+	growthRate(1),
+	drainRate(1),
+	growthCap(1.0f)
 {}
 
 void Faction::init(){
@@ -103,3 +106,26 @@ int Faction::getCost()const{
 	return techCost;
 }
 
+int Faction::getGrowthRate()const{
+	return growthRate;
+}
+
+int Faction::getDrainRate()const{
+	return drainRate;
+}
+
+float Faction::getGrowthCap()const{
+	return growthCap;
+}
+
+void Faction::upgradeGrowthRate(){
+	growthRate++;
+}
+
+void Faction::upgradeGrowthCap(){
+	growthCap += 0.5;
+}
+
+void Faction::upgradeDrainRate(){
+	drainRate++;
+}
