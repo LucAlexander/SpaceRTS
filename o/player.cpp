@@ -169,6 +169,7 @@ void Player::update(){
 	growthRate->setShow(upgradeMenuQueue>0&&tabOpen);
 	growthCap->setShow(upgradeMenuQueue>0&&tabOpen);
 	drainSpeed->setShow(upgradeMenuQueue>0&&tabOpen);
+	changeShipFraction();
 	dbug::showHitboxes(false);
 	if(inp::keyHeld(sf::Keyboard::Key::Tab)){
 		dbug::showHitboxes(true);
@@ -203,6 +204,17 @@ void Player::drawGui(){
 	}
 	win::window.draw(tab);
 	win::window.draw(factionName);
+}
+
+void Player::changeShipFraction(){
+	if (inp::keyPressed(sf::Keyboard::Key::Equal)){
+		faction->addFraction();
+		return;
+	}
+	if (inp::keyPressed(sf::Keyboard::Key::Hyphen)){
+		faction->subFraction();
+		return;
+	}
 }
 
 void Player::toggleTab(){
@@ -338,7 +350,6 @@ void Player::setTarget(Planet* instance){
 Faction* Player::getFaction()const{
 	return faction;
 }
-
 
 void Player::setFactionName(std::string name){
 	faction->setName(name);

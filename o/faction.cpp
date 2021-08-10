@@ -14,7 +14,8 @@ Faction::Faction():
 	techCost(25),
 	growthRate(1),
 	drainRate(1),
-	growthCap(1.0f)
+	growthCap(1.0f),
+	sendFraction(0.5)
 {}
 
 void Faction::init(){
@@ -129,3 +130,20 @@ void Faction::upgradeGrowthCap(){
 void Faction::upgradeDrainRate(){
 	drainRate++;
 }
+
+void Faction::setFraction(float f){
+	sendFraction = f;
+}
+
+float Faction::getFraction()const{
+	return sendFraction;
+}
+
+void Faction::subFraction(){
+	sendFraction -= (sendFraction == 0) ? 0 : 0.25;
+}
+
+void Faction::addFraction(){
+	sendFraction += (sendFraction == 1) ? 0 : 0.25;
+}
+

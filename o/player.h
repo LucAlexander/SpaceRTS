@@ -56,6 +56,7 @@ private:
 	void setupButtons();
 	void setupText();
 	void setupElements();
+	void changeShipFraction();
 };
 
 #endif

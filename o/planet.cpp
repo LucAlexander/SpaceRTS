@@ -133,9 +133,9 @@ void Planet::spawnUnits(){
 	int polarity = 1;
 	int placeDist = rad;
 	int placeOffset = 16;
-	int shipLoad = population - (population / 2);
+	int shipLoad = population * faction->getFraction();
 	int shipPartitionSize = 5;
-	population /= 2;
+	population -= population*faction->getFraction();
 	int tries = 0;
 	while (shipLoad > 0){
 		int popCount = std::min(shipPartitionSize, shipLoad);

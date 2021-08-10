@@ -23,6 +23,10 @@ public:
 	void upgradeGrowthRate();
 	void upgradeGrowthCap();
 	void upgradeDrainRate();
+	void setFraction(float f);
+	void subFraction();
+	void addFraction();
+	float getFraction()const;
 private:
 	std::string name;
 	sf::Color col;
@@ -36,6 +40,7 @@ private:
 	int growthRate;
 	int drainRate;
 	float growthCap;
+	float sendFraction;
 };
 
 #endif
