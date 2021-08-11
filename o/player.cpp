@@ -30,6 +30,7 @@ Player::Player():
 	growthUpLabel(),
 	growthCapUpLabel(),
 	drainUpLabel(),
+	sendPercentLabel(),
 	font(),
 	techString("TECH "),
 	resourceString("RESOURCES: "),
@@ -144,6 +145,13 @@ void Player::setupText(){
 	drainUpLabel.setOutlineThickness(2);
 	drainUpLabel.setOutlineColor(faction->getColor());
 	drainUpLabel.setScale(0.25, 0.25);
+	sendPercentLabel.setFont(font);
+	sendPercentLabel.setString(std::to_string((int)(faction->getFraction()*100))+" %");
+	sendPercentLabel.setPosition(win::gui.getSize().x-64, win::gui.getSize().y-32);
+	sendPercentLabel.setFillColor(sf::Color(32, 32, 32));
+	sendPercentLabel.setOutlineThickness(2);
+	sendPercentLabel.setOutlineColor(faction->getColor());
+	sendPercentLabel.setScale(0.5, 0.5);
 }
 
 void Player::setupElements(){
@@ -204,15 +212,18 @@ void Player::drawGui(){
 	}
 	win::window.draw(tab);
 	win::window.draw(factionName);
+	win::window.draw(sendPercentLabel);
 }
 
 void Player::changeShipFraction(){
 	if (inp::keyPressed(sf::Keyboard::Key::Equal)){
 		faction->addFraction();
+		sendPercentLabel.setString(std::to_string((int)(faction->getFraction()*100))+" %");
 		return;
 	}
 	if (inp::keyPressed(sf::Keyboard::Key::Hyphen)){
 		faction->subFraction();
+		sendPercentLabel.setString(std::to_string((int)(faction->getFraction()*100))+" %");
 		return;
 	}
 }

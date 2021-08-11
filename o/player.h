@@ -39,6 +39,7 @@ private:
 	sf::Text growthUpLabel;
 	sf::Text growthCapUpLabel;
 	sf::Text drainUpLabel;
+	sf::Text sendPercentLabel;
 	sf::Font font;
 	std::string techString;
 	std::string resourceString;
