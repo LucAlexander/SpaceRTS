@@ -2,8 +2,8 @@
 SETLOCAL EnableDelayedExpansion
 SET objectFiles=SpaceRTS.cpp
 SET engineFiles=
-SET oFile=unit point planet player faction partition triangulation regionMapping nationGenerator
-SET eFile=game.cpp game.h debug.cpp debug.h rnd.cpp rnd.h utils.cpp utils.h input.cpp input.h win.cpp win.h entity.cpp entity.h entityHandler.cpp particle.cpp particle.h particleSystem.h entityHandler.h textureTable.cpp textureTable.h animator.cpp animator.h alarm.cpp alarm.h button.cpp button.h 
+SET oFile=unit point planet player bot faction partition triangulation regionMapping nationGenerator
+SET eFile=game.cpp game.h debug.cpp debug.h rnd.cpp rnd.h utils.cpp utils.h input.cpp input.h win.cpp win.h entity.cpp entity.h entityHandler.cpp particle.cpp particle.h particleSystem.h entityHandler.h textureTable.cpp textureTable.h animator.cpp animator.h alarm.cpp alarm.h button.cpp button.h settings.cpp settings.h 
 SET oPref=o/
 SET ePref=e/
 SET srcSuf=.cpp

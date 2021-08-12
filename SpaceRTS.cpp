@@ -8,29 +8,20 @@
 #include "o/nationGenerator.h"
 #include "o/regionMapping.h"
 #include "o/unit.h"
-#include "o/unitTarget.h"
 #include "o/player.h"
+#include "o/bot.h"
+
+#include <iostream>
 
 int main(int argc, char** argv){
 	Game SpaceRTS = Game("SpaceRTS");
 	SpaceRTS.setInitCode([](){
 		// CIV NAME GENERATION
 		enth::create(0, 0, NationGenerator());	
-		/*sf::Font font;
-		if (!font.loadFromFile("FSEX300.ttf")){
-			return -1;
-		}
-		std::string name = "";
-		for (int i = 0;i<6;++i){
-			name += gen.generate("indonesian") + "\n";
-		}
-		sf::Text message(name, font);
-		*/
 
 		// MAPPING INSTANTIATION AND MAKING TRIANGLE MESH
 		RegionMapper mapper = RegionMapper(16);
 		std::vector<Partition> regions = mapper.generateTriangles(mapper.generatePoints());
-		
 		
 		// GALAXY POINT GENERATION
 		int density, spirals;
@@ -52,6 +43,7 @@ int main(int argc, char** argv){
 		mapper.generatePlanetPositions(64, 8, 5, 25);
 	
 		enth::create(0, 0, Player());
+		enth::create(0, 0, Bot());
 
 		// UNIT BOID TESTING
 		/*for (int i = 0;i<10;++i){
